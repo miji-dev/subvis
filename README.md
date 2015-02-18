@@ -17,29 +17,29 @@ Visualized Subtitle Analysis
   - Templating (Jade?)
 
 ## Things to do
-- List of available subtitles
+1. List of available subtitles
   - local
   - id and/or imdbid, movie name
   - selectable e.g. via autocomplete search input field
   - List already created and filtered --> subtitles.txt (142802 movies)
   - create server-side, show client-side
-- Filter subtitle files for a specific movie
+2. Filter subtitle files for a specific movie
   - Opus dump?
   - Use API?
   - Limit available movies and store list locally?
   - Always use the best rated sub file
   - server-side
-- Download the selected subtitle file
+3. Download the selected subtitle file
   - Opus dump?
   - Use API
   - server-side
-- Preprocess file
+4. Preprocess file
   - convert into object
   - server-side
-- NLP
+5. NLP
   - Node.js natural
   - server-side
-- Visualise
+6. Visualise
   - Node.js D3
   - client-side
 
