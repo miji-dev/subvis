@@ -14,6 +14,7 @@ Visualized Subtitle Analysis
   - Opensubtitles-Client ???
   - Backbone.js
   - D3.js
+  - Templating (Jade?)
 
 ## Things to do
 - List of available subtitles
