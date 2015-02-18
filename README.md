@@ -41,6 +41,6 @@ Visualized Subtitle Analysis
 - Visualise
   - Node.js D3
   - client-side
+
 ## Open Questions
 - Do we need to persist data?
-- 
