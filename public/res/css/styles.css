@@ -1,0 +1,97 @@
+/* generics */
+
+body {
+	background: #efefef;
+	color: #333;
+	font-family: 'Segoe UI light';
+	font-size: 1em;
+}
+
+a {
+	text-decoration: none;
+}
+
+h1 {
+	border-bottom: 1px solid #333;
+	font-size: 2em;
+	margin: 0.2em 0;
+	padding: 0.2em 0;
+	text-transform: uppercase;
+}
+
+h2 {
+	font-size: 1.6em;
+	margin: 0.4em 0;
+	text-transform: uppercase;
+}
+/* containers */
+
+.container {
+	padding: 5px;
+}
+
+.outer-container {
+	padding: 0;
+}
+/* header */
+
+.header-container {
+	background: #333;
+	border-bottom: 2px solid #fff;
+	color: #fff;
+	text-transform: uppercase;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+}
+
+/* Logo */
+
+.logo {
+	line-height: 40px;
+	padding: 0 10px;
+}
+/* Search */
+
+.search-movie {
+	border: none;
+	border-radius: 5px;
+	font-family: 'Courier New' monospace;
+	font-size: 1.2em;
+	height: 40px;
+	left: 25%;
+	position: absolute;
+	padding: 5px;
+	outline: none;
+	width: 50%;
+}
+
+/* content */
+/* modules */
+
+.modules-container {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-webkit-flex-wrap: wrap;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	height: 600px;
+}
+
+.module {
+	background: #fff;
+	border-radius: 5px;
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+	margin: 5px;
+	padding: 5px;
+	height: 200px;
+	width: 200px;
+}
