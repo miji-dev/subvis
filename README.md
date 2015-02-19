@@ -1,7 +1,7 @@
 # subvis
 Visualized Subtitle Analysis
 
-## Rules for Contributors
+## Conventions for Contributors
 - Master branch ALWAYS contains a working version
 - We use node.js and backbone (let's just try this one ...) to organise the code
 - The code is organized strictly modular
@@ -44,6 +44,22 @@ Visualized Subtitle Analysis
 6. Visualise
   - Node.js D3
   - client-side
+
+## Thoughts
+- View: List of all available movies (?)
+  - Filter that view (genres, ...) (?)
+- View: Analyse one single movie
+- View: Analyse and compare two (or more?) movies
+- Module: Search mask with autocomplete for one single movie
+- GET-Routing via id/movie name/imdb --> queryString vs. path
+  - subvis/ --> home. list of all movies or simple landing page
+  - subvis/1583 --> path routing via id or imdb
+  - subvis/Pulp+Fiction --> path routing via movie name
+  - subivs/single?id=1583 --> queryString routing via id
+  - subvis/single?imdb=1234 --> queryString routing via imdb
+  - subvis/single?name=Pulp+Fiction --> queryString routing via movie name
+  - subvis/multi?id1=1583&id2=1234 --> queryString routing using two movies
+- Or no advanced routing and just use a plain search field based UI
 
 ## Open Questions
 - Do we need to persist data? I don't think so
