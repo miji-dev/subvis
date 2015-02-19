@@ -15,6 +15,8 @@ Visualized Subtitle Analysis
   - Backbone.js
   - D3.js
   - Templating (Jade?)
+- Autocomplete? (e.g. http://leaverou.github.io/awesomplete/)
+- jQuery? Not sure if neccessary and if integrated in Node.js
 
 ## Things to do
 1. List of available subtitles
@@ -44,4 +46,4 @@ Visualized Subtitle Analysis
   - client-side
 
 ## Open Questions
-- Do we need to persist data?
+- Do we need to persist data? I don't think so
