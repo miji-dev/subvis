@@ -9,14 +9,17 @@ Visualized Subtitle Analysis
 - Each issue is handled in an own branch
 
 ## Libraries/Tools/Frameworks
-- Node.js
+- Server (Node.js npm)
   - Express.js
   - Opensubtitles-Client ???
-  - Backbone.js
-  - D3.js
   - Templating (Jade?)
-- Autocomplete? (e.g. http://leaverou.github.io/awesomplete/)
-- jQuery? Not sure if neccessary and if integrated in Node.js
+- Client
+  - Backbone.js
+  - underscore.js
+  - require.js
+  - D3.js
+  - Autocomplete? (e.g. http://leaverou.github.io/awesomplete/)
+  - jQuery? Not sure if neccessary, maybe d3 is enough
 
 ## Things to do
 1. List of available subtitles
