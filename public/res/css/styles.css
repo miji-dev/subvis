@@ -3,7 +3,7 @@
 body {
 	background: #efefef;
 	color: #333;
-	font-family: 'Segoe UI light';
+	font-family: 'Segoe UI light' sans-serif;
 	font-size: 1em;
 }
 
@@ -22,7 +22,21 @@ h1 {
 h2 {
 	font-size: 1.6em;
 	margin: 0.4em 0;
+	text-align: center;
 	text-transform: uppercase;
+}
+
+button {
+	border: none;
+	border-radius: 5px;
+	color: #999;
+	cursor: pointer;
+	font-family: 'Segoe UI light';
+	font-size: 1.2em;
+	line-height: 30px;
+	text-transform: uppercase;
+	margin: 0 auto;
+	padding: 10px;
 }
 /* containers */
 
@@ -45,7 +59,6 @@ h2 {
 	display: -ms-flexbox;
 	display: flex;
 }
-
 /* Logo */
 
 .logo {
@@ -54,19 +67,37 @@ h2 {
 }
 /* Search */
 
-.search-movie {
-	border: none;
-	border-radius: 5px;
-	font-family: 'Courier New' monospace;
-	font-size: 1.2em;
-	height: 40px;
-	left: 25%;
-	position: absolute;
-	padding: 5px;
-	outline: none;
+.search-box {
+	margin: 100px auto;
+	padding: 2px;
+	overflow: auto;
 	width: 50%;
 }
 
+.search-movie {
+	border: none;
+	float: left;
+	border-radius: 10px 0 0 10px;
+	color: #999;
+	font-family: 'Courier New' monospace;
+	font-size: 1.2em;
+	height: 50px;
+	margin: 0 auto;
+	padding: 10px;
+	width: 70%;
+}
+.btn-search-movie {
+	background: url(../img/search.png) 10px center no-repeat #999;
+	color: #ddd;
+	float: left;
+	border-radius: 0 10px 10px 0;
+	height: 50px;
+	padding-left: 34px;
+	width: 30%;
+}
+.btn-search-movie:hover {
+	
+}
 /* content */
 /* modules */
 

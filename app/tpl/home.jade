@@ -1,35 +1,10 @@
-doctype(html)
+//- home.jade
+include ./includes/head.jade
 
-html
-	head
-		meta(charset="UTF-8")
-		meta(http-quiv="X-UA-Compatible", content="IE-edge")
-
-		title SubVis V0.1
-
-		link(rel="stylesheet", href="/res/css/reset.css")
-		link(rel="stylesheet", href="/res/css/awesomplete.css")
-		link(rel="stylesheet", href="/res/css/styles.css")
-		
-	body
-		div#outer-container.container.outer-container
-		
-			div#header-container.container.header-container
-				span#logo.logo SubVis V0.1
-				input(autofocus, placeholder="Search Movie ...")#search-movie.search-movie
-			
-			div#test-area
-			
-			//div#content-container.container.content-container
-				h1 Title
-				h2 Subtitle ...
-				
-			//div#modules-container.container.modules-container
-				div#module-1.module a
-				div#module-2.module b
-				div#module-3.module c
-				div#module-4.module d
-				div#module-5.module e
-				div#module-6.module f
-				
-		script(data-main="/src/config", src="/lib/require.js")
+div#search-box.search-box
+	datalist(id='subs')
+		- each val in subs
+			option(label= val.imdb)= val.value
+	input#search-movie.search-movie(list='subs', placeholder='Type in a movie title', autofocus)
+	button#btn-search-movie.btn.btn-search-movie Search Movie
+include ./includes/foot.jade
