@@ -3,7 +3,7 @@ Visualized Subtitle Analysis
 
 ## Conventions for Contributors
 - Master branch ALWAYS contains a working version
-- We use node.js and backbone (let's just try this one ...) to organise the code
+- We use node.js
 - The code is organized strictly modular
 - We use issues to track not yet done work
 - Each issue is handled in an own branch
@@ -11,33 +11,29 @@ Visualized Subtitle Analysis
 ## Libraries/Tools/Frameworks
 - Server (Node.js npm)
   - Express.js
-  - Opensubtitles-Client ???
-  - Templating (Jade?)
+  - Opensubtitles-Client
+  - Templating with Jade
 - Client
-  - Backbone.js
-  - underscore.js
-  - require.js
   - D3.js
-  - Autocomplete? (e.g. http://leaverou.github.io/awesomplete/)
   - jQuery? Not sure if neccessary, maybe d3 is enough
 
 ## Things to do
-1. List of available subtitles
-  - local
-  - id and/or imdbid, movie name
-  - selectable e.g. via autocomplete search input field
-  - List already created and filtered --> subtitles.txt (142802 movies)
-  - create server-side, show client-side
-2. Filter subtitle files for a specific movie
-  - Opus dump?
-  - Use API?
-  - Limit available movies and store list locally?
-  - Always use the best rated sub file
-  - server-side
-3. Download the selected subtitle file
-  - Opus dump?
-  - Use API
-  - server-side
+1. List of available subtitles --> works
+  - local --> yeah
+  - id and/or imdbid, movie name --> yeah
+  - selectable e.g. via autocomplete search input field --> yeah
+  - List already created and filtered --> subtitles.txt (40000-ish movies) --> yeah
+  - create server-side, show client-side --> yeah
+2. Filter subtitle files for a specific movie --> works
+  - Opus dump? --> nope
+  - Use API? --> yeah
+  - Limit available movies and store list locally? --> yeah
+  - Always use the best rated sub file --> yeah
+  - server-side --> yeah
+3. Download the selected subtitle file --> works
+  - Opus dump? --> nope
+  - Use API --> yeah
+  - server-side --> yeah
 4. Preprocess file
   - convert into object
   - server-side
