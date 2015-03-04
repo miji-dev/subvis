@@ -30,7 +30,7 @@ app.get(/^\/\d+$/, function (req, res) {
 		//TODO: All of the subtitle processing
 		//TODO: Prepare the UI
 		//TODO: Send everything back to the client
-		console.log(data, 'yay');
+		console.log(data);
 	});
 });
 

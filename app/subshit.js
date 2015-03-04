@@ -3,8 +3,6 @@ var subshit = require('../node_modules/opensubtitles-client/Index.js');
 var events = require('events');
 var http = require('http');
 var zlib = require('zlib');
-var events = require('events');
-var eventEmitter = new events.EventEmitter();
 
 var TOKEN;
 var callback;
@@ -31,20 +29,22 @@ var getSubtitle = function (id, cb) {
 		var bestRating = 0;
 		var bestID;
 		var subLink;
+		
 		for (var i = 0; i < results.length; i++) {
 			var sub = results[i],
 				rating = Number(sub.SubRating);
-
+			
 			if (rating > bestRating) {
 				bestRating = rating;
 				bestID = i;
 				subLink = sub.SubDownloadLink;
+
 				if (bestRating == 10) {
 					break;
 				}
 			}
 		}
-		console.log(subLink);
+
 		downloadSubtitle(subLink);
 	});
 };
@@ -60,11 +60,39 @@ var downloadSubtitle = function (link) {
 };
 
 var preprocessSubtitle = function (subString) {
-	var data = subString.split(/\r\n\r\n/g);
-	for (var i = 0; i < data.length; i++) {
-		data[i] = data[i].split(/\r\n/);
+	var data = subString.split(/\r\n\r\n/g),
+		i,
+		l;
+
+	for (i = 0, l = data.length; i < l; i++) {
+		var splitted = data[i].split(/\r\n/);
+		var timestamp = splitted[1].split(' --> ');
+
+		data[i] = {
+			id: splitted[0],
+			from: formatTime(timestamp[0]),
+			to: formatTime(timestamp[1]),
+			text: splitted.slice(2,splitted.length),
+		}
+		data[i].duration = data[i].to - data[i].from;
+
+		// not sure if I should mix array and objects features ...
+		if(i == 0) {
+			data.first = data[i].from;
+		}
+		if(i == l - 1) {
+			data.last = data[i].to;
+		}
 	}
+		
 	callback(data);
+};
+
+var formatTime = function(timeString) {
+	var hms = timeString.split(':');
+	var sms = hms[2].split(',');
+	var millisecs = Number(hms[0]) * 3600000 + Number(hms[1]) * 60000 + Number(sms[0]) * 1000 + Number(sms[1]);
+	return millisecs;
 };
 
 var onSubtitleDownloaded = function (res) {
