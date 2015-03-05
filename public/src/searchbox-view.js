@@ -22,6 +22,15 @@ SubVis.SearchBoxView = (function () {
 		getInputValue = function () {
 			return $input.val();
 		},
+		
+		clipToBar = function() {
+			$searchbox.removeClass('search-box-header');
+			$searchbox.addClass('search-box-header');
+		},
+		
+		unlockFromBar = function() {
+			$searchbox.removeClass('search-box-header');			
+		},
 
 		mapInputValue = function () {
 			var val = getInputValue(),
@@ -45,5 +54,7 @@ SubVis.SearchBoxView = (function () {
 		};
 
 	that.init = init;
+	that.clipToBar = clipToBar;
+	that.unlockFromBar = unlockFromBar;
 	return that;
 })();

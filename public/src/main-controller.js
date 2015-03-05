@@ -1,11 +1,13 @@
 SubVis.MainController = (function () {
 	var that = {},
 		searchBoxView,
+		contentController,
 		$body,
 
 		init = function () {
 			$body = $('body');
 
+			initControllers();
 			initViews();
 			registerListeners();
 
@@ -15,16 +17,20 @@ SubVis.MainController = (function () {
 		registerListeners = function () {
 			$body.on('searchSubtitle', onSearchSubtitle);
 		},
+		
+		initControllers = function() {
+			contentController = SubVis.ContentController.init();
+		},
 
 		onSearchSubtitle = function (event, data) {
 			$.get('http://localhost:3000/' + data, function(data) {
-				console.log(data);
-			})
-			console.log(event, data);
+				searchBoxView.clipToBar();
+				contentController.render(data);
+			});
 		},
 
 		initViews = function () {
-			SubVis.SearchBoxView.init();
+			searchBoxView = SubVis.SearchBoxView.init();
 		};
 
 	that.init = init;

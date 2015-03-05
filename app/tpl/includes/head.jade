@@ -13,5 +13,11 @@ html(lang='en')
 		
 			div#header-container.container.header-container
 				span#logo.logo SubVis V0.1
+				div#search-box.search-box
+					datalist(id='subs')
+						- each val in subs
+							option(label= val.imdb)= val.value
+					input#search-movie.search-movie(list='subs', placeholder='Type in a movie title', autofocus)
+					button#btn-search-movie.btn.btn-search-movie Search
 			
 			div#content-container.container.content-container

@@ -26,11 +26,14 @@ app.get(/^\/\d+$/, function (req, res) {
 	var subtitleID = Number(req.url.slice(1));
 
 	// Returns the best rated subtitle string for the requested movie by imdbid
-	subshit.getSubtitle(subtitleID, function(data) {
+	subshit.getSubtitle(subtitleID, function (data) {
 		//TODO: All of the subtitle processing
 		//TODO: Prepare the UI
 		//TODO: Send everything back to the client
-		console.log(data);
+		res.render('single', {
+			data: data
+		});
+		res.end()
 	});
 });
 

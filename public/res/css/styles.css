@@ -1,9 +1,13 @@
+@font-face {
+	font-family: 'Stahl';
+	src: url('Stahl.eot?#iefix') format('embedded-opentype'), url('Stahl.otf') format('opentype'), url('Stahl.woff') format('woff'), url('Stahl.ttf') format('truetype'), url('Stahl.svg#Stahl') format('svg');
+}
 /* generics */
 
 body {
 	background: #efefef;
 	color: #333;
-	font-family: 'Segoe UI light' sans-serif;
+	font-family: 'Stahl' sans-serif;
 	font-size: 1em;
 }
 
@@ -31,9 +35,9 @@ button {
 	border-radius: 5px;
 	color: #999;
 	cursor: pointer;
-	font-family: 'Segoe UI light';
-	font-size: 1.2em;
-	line-height: 30px;
+	font-family: 'Stahl';
+	font-size: 1.8em;
+	line-height: 40px;
 	text-transform: uppercase;
 	margin: 0 auto;
 	padding: 10px;
@@ -47,31 +51,55 @@ button {
 .outer-container {
 	padding: 0;
 }
+
+.modules-container {}
 /* header */
 
 .header-container {
 	background: #333;
 	border-bottom: 2px solid #fff;
 	color: #fff;
-	text-transform: uppercase;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;
 	display: flex;
+	height: 50px;
+	padding: 0 5px;
+	text-transform: uppercase;
 }
 /* Logo */
 
 .logo {
-	line-height: 40px;
+	font-size: 1.8em;
+	line-height: 50px;
 	padding: 0 10px;
 }
 /* Search */
 
 .search-box {
-	margin: 100px auto;
+	position: absolute;
+	top: 50%;
+	left: 25%;
+	margin: auto;
 	padding: 2px;
 	overflow: auto;
 	width: 50%;
+}
+
+.search-box-header {
+	left: auto;
+	position: relative;
+	top: auto;
+}
+
+.search-box-header > input,
+.search-box-header > button {
+	height: 40px;
+	font-size: 1.6em;
+}
+
+.search-box-header > button {
+	padding-top: 5px;
 }
 
 .search-movie {
@@ -79,13 +107,15 @@ button {
 	float: left;
 	border-radius: 10px 0 0 10px;
 	color: #999;
-	font-family: 'Courier New' monospace;
-	font-size: 1.2em;
+	font-family: 'Stahl';
+	font-size: 2em;
 	height: 50px;
 	margin: 0 auto;
+	outline: none;
 	padding: 10px;
-	width: 70%;
+	width: 80%;
 }
+
 .btn-search-movie {
 	background: url(../img/search.png) 10px center no-repeat #999;
 	color: #ddd;
@@ -93,15 +123,14 @@ button {
 	border-radius: 0 10px 10px 0;
 	height: 50px;
 	padding-left: 34px;
-	width: 30%;
+	width: 20%;
 }
-.btn-search-movie:hover {
-	
-}
+
+.btn-search-movie:hover {}
 /* content */
 /* modules */
 
-.modules-container {
+.modules {
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;

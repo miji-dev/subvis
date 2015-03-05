@@ -1,10 +1,4 @@
 //- home.jade
 include ./includes/head.jade
 
-div#search-box.search-box
-	datalist(id='subs')
-		- each val in subs
-			option(label= val.imdb)= val.value
-	input#search-movie.search-movie(list='subs', placeholder='Type in a movie title', autofocus)
-	button#btn-search-movie.btn.btn-search-movie Search Movie
 include ./includes/foot.jade
