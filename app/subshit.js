@@ -1,6 +1,5 @@
 // This fucking shit is a fucking shit fuck!
 var subshit = require('../node_modules/opensubtitles-client/Index.js');
-var events = require('events');
 var http = require('http');
 var zlib = require('zlib');
 

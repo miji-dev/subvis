@@ -3,8 +3,6 @@ var app = express();
 var subsreader = require('./app/subsreader');
 var sublist = subsreader.getSubs();
 var subshit = require('./app/subshit');
-var events = require('events');
-var eventEmitter = new events.EventEmitter();
 
 // Needed to deliver static files (css, img, etc) 
 app.use(express.static('public'));
