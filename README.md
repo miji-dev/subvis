@@ -34,13 +34,17 @@ Visualized Subtitle Analysis
   - Opus dump? --> nope
   - Use API --> yeah
   - server-side --> yeah
-4. Preprocess file
-  - convert into object
-  - server-side
+4. Preprocess file --> works
+  - convert into object --> works
+  - server-side --> works
 5. NLP
-  - Node.js natural
+  - Node.js. natural vs. stanford
+  - sentiment analysis. sentiment vs. Sentimental
   - server-side
-6. Visualise
+6. Module Templates
+  - Meta Module
+  - ... Module
+7. Visualise
   - Node.js D3
   - client-side
 
