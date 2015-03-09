@@ -2,8 +2,12 @@
 var subshit = require('../node_modules/opensubtitles-client/Index.js');
 var http = require('http');
 var zlib = require('zlib');
+var SubModel = require('./SubModel');
+var subModel;
 
 var TOKEN;
+var SUBLIST;
+
 var callback;
 
 subshit.api.on("login", function (token) {
@@ -25,15 +29,22 @@ var getSubtitle = function (id, cb) {
 	callback = cb;
 
 	subshit.api.searchID(TOKEN, 'eng', id).done(function (results) {
-		var bestRating = 0;
-		var bestID;
-		var subLink;
-		
+		var bestRating = 0,
+			bestID,
+			subLink,
+			movieName = '',
+			movieYear = 0,
+			movieRating = 0;
+
+
 		for (var i = 0; i < results.length; i++) {
 			var sub = results[i],
 				rating = Number(sub.SubRating);
-			
+
 			if (rating > bestRating) {
+				movieName = movieName || sub.MovieName;
+				movieYear = movieYear || sub.MovieYear;
+				movieRating = movieRating|| sub.MovieImdbRating;
 				bestRating = rating;
 				bestID = i;
 				subLink = sub.SubDownloadLink;
@@ -44,6 +55,7 @@ var getSubtitle = function (id, cb) {
 			}
 		}
 
+		subModel = new SubModel(id, movieName, movieYear, movieRating);
 		downloadSubtitle(subLink);
 	});
 };
@@ -71,23 +83,16 @@ var preprocessSubtitle = function (subString) {
 			id: splitted[0],
 			from: formatTime(timestamp[0]),
 			to: formatTime(timestamp[1]),
-			text: splitted.slice(2,splitted.length),
+			text: splitted.slice(2, splitted.length),
 		}
 		data[i].duration = data[i].to - data[i].from;
-
-		// not sure if I should mix array and objects features ...
-		if(i == 0) {
-			data.first = data[i].from;
-		}
-		if(i == l - 1) {
-			data.last = data[i].to;
-		}
 	}
-		
-	callback(data);
+	subModel.setSequences(data);
+
+	callback(subModel);
 };
 
-var formatTime = function(timeString) {
+var formatTime = function (timeString) {
 	var hms = timeString.split(':');
 	var sms = hms[2].split(',');
 	var millisecs = Number(hms[0]) * 3600000 + Number(hms[1]) * 60000 + Number(sms[0]) * 1000 + Number(sms[1]);

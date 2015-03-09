@@ -29,7 +29,7 @@ app.get(/^\/\d+$/, function (req, res) {
 		//TODO: Prepare the UI
 		//TODO: Send everything back to the client
 		res.render('single', {
-			data: data
+			sub: data
 		});
 		res.end()
 	});
