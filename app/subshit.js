@@ -29,7 +29,7 @@ var getSubtitle = function (id, cb) {
 	callback = cb;
 
 	subshit.api.searchID(TOKEN, 'eng', id).done(function (results) {
-		var bestRating = 0,
+		var mostDownloads = 0,
 			bestID,
 			subLink,
 			movieName = '',
@@ -39,19 +39,15 @@ var getSubtitle = function (id, cb) {
 
 		for (var i = 0; i < results.length; i++) {
 			var sub = results[i],
-				rating = Number(sub.SubRating);
+				downloads = Number(sub.SubDownloadsCnt);
 
-			if (rating > bestRating) {
+			if (downloads > mostDownloads) {
 				movieName = movieName || sub.MovieName;
 				movieYear = movieYear || sub.MovieYear;
 				movieRating = movieRating|| sub.MovieImdbRating;
-				bestRating = rating;
+				mostDownloads = downloads;
 				bestID = i;
 				subLink = sub.SubDownloadLink;
-
-				if (bestRating == 10) {
-					break;
-				}
 			}
 		}
 

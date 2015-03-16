@@ -1,0 +1,16 @@
+// -includes/timeline.jade
+#module-timeline.module.module-timeline
+	h3.module-title Timeline
+	
+		h4.meta-title last time
+		.meta-item #{sub.getTimeString('length')}
+		h4.meta-title first time
+		.meta-item #{sub.getTimeString('first')}
+		h4.meta-title sequence count
+		.meta-item #{sub.getSequenceCount()}
+		h4.meta-title speech duration
+		.meta-item #{sub.getTimeString('speechduration')}
+		h4.meta-title first sequence
+		.meta-item #{sub.getFirstText().join()}
+		h4.meta-title last sequence
+		.meta-item #{sub.getLastText().join()}

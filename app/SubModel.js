@@ -49,6 +49,34 @@ SubModel.prototype.getLastTime = function () {
 };
 
 /**
+ * returns formatted time string hh:mm:ss
+ * @param   {String} which which time should be returned
+ * @returns {String} the formatted time string
+ */
+SubModel.prototype.getTimeString = function (which) {
+	var millis, str = '',
+		hours, mins, secs;
+	switch (which) {
+	case 'length':
+		millis = this.getLastTime();
+		break;
+	case 'first':
+		millis = this.getFirstTime();
+		break;
+	case 'speechduration':
+		millis = this.getSpeechDuration();
+		break;
+	}
+	hours = Math.floor(millis / 36e5);
+	mins = Math.floor((millis % 36e5) / 6e4);
+	secs = Math.floor((millis % 6e4) / 1000);
+	str += (hours > 9 ? hours : ('0' + hours));
+	str += ':' + (mins > 9 ? mins : ('0' + mins));
+	str += ':' + (secs > 9 ? secs : ('0' + secs));
+	return str;
+}
+
+/**
  * returns the text array of the last subtitle sequence
  * @return {Array} the movie's last subtitle sequence
  */
@@ -124,7 +152,7 @@ SubModel.prototype.removePart = function (start, count) {
 SubModel.prototype.getSpeechDuration = function () {
 	var dur = 0;
 	for (var i = 0; i < this.sequences.length; i++) {
-		dur += this.sequences[i].duration;
+		dur += Number(this.sequences[i].duration);
 	}
 	return dur;
 };
