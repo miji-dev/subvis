@@ -29,11 +29,22 @@ app.get(/^\/\d+$/, function (req, res) {
 		//TODO: Prepare the UI
 		//TODO: Send everything back to the client
 		res.render('single', {
-			sub: data
+			sub: data,
+			subJSON: transformJSONObject(data)
 		});
 		res.end()
 	});
 });
+
+function transformJSONObject(data) {
+	var newObj = JSON.parse(JSON.stringify(data));
+	for (var key in data) {
+		if (typeof data[key] === 'function') {
+			newObj[key] = data[key].toString();
+		}
+	}
+	return newObj;
+}
 
 // Single Movie by Name (every character allowed)
 /*

@@ -166,3 +166,11 @@ button {
 	background: #efefef;
 	padding: 5px;
 }
+/* timeline module */
+.module-timeline {
+	
+}
+#timeline-box {
+	width: 100%;
+	height: 500px;
+}

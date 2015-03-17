@@ -2,4 +2,8 @@
 #modules-container.container.modules-container
 	#modules.modules
 		include ./includes/module-meta.jade
+		include ./includes/module-time.jade
 		include ./includes/module-timeline.jade
+
+script.
+	var sub_data = !{JSON.stringify(subJSON)}

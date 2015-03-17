@@ -4,6 +4,6 @@ var SubVis = {
 	}
 };
 
-$(function () {
+$(function() {
 	SubVis.init();
 });

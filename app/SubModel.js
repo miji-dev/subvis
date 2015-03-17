@@ -115,6 +115,20 @@ SubModel.prototype.getAllWordsString = function () {
 	return str;
 };
 
+SubModel.prototype.getSequencesPercent = function () {
+	var res = [],
+		last = this.getLastTime(),
+		tick = Math.floor(last / 100),
+		seq,
+		currTime = 0;
+	for (var i = 0; i < this.sequences.length; i++) {
+		seq = this.sequences[i];
+		if (seq.from > currTime && seq.from < (tick * i + 1)) {
+			
+		}
+	}
+}
+
 /**
  * returns an array with all spoken text, split into subtitle sequences
  * @return {Array} all the subtitle texts by sequences
