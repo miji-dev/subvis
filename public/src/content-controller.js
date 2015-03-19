@@ -1,7 +1,12 @@
 SubVis.ContentController = (function () {
 	var that = {},
 		$contentContainer,
-		timeline,
+		//modules
+		moduleTimeline,
+		moduleSettings,
+		moduleMeta,
+		moduleTime,
+
 		subData,
 
 		init = function () {
@@ -9,8 +14,35 @@ SubVis.ContentController = (function () {
 			return that;
 		},
 
+		registerListeners = function () {
+			$contentContainer.on('removeClicked', onRemoveClicked);
+		},
+
+		onRemoveClicked = function (event, which) {
+			if (which == 'first') {
+				subData.removePart();
+			} else {
+				subData.removePart(subData.sequences.length - 1);
+			}
+			renderModules();
+		},
+
 		initModules = function () {
-			timeline = SubVis.Timeline.init();
+			moduleTimeline = SubVis.ModuleTimeline.init(subData);
+			moduleSettings = SubVis.ModuleSettings.init();
+			moduleMeta = SubVis.ModuleMeta.init();
+			moduleTime = SubVis.ModuleTime.init();
+
+			registerListeners();
+		},
+
+		renderModules = function () {
+			moduleSettings.render(subData.getFirstText(), subData.getLastText());
+
+			var timeArray = [subData.getTimeString('length'), subData.getTimeString('first'), subData.getSequenceCount(), subData.getTimeString('speechduration')];
+			moduleTime.render(timeArray);
+			
+			moduleTimeline.initUI(subData);
 		},
 
 		transformJSON = function (jsonObj) {
@@ -29,8 +61,6 @@ SubVis.ContentController = (function () {
 			subData = transformJSON(sub_data);
 
 			initModules();
-
-			timeline.d3Stuff(subData);
 		};
 
 	that.init = init;

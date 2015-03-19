@@ -1,9 +1,11 @@
 // -includes/meta.jade
 #module-meta.module.module-meta
 	h3.module-title Meta Infos
-		h4.meta-title movie title
-		.meta-item #{sub.get('title')}
-		h4.meta-title movie year
-		.meta-item #{sub.get('year')}
-		h4.meta-title imdb rating
-		.meta-item #{sub.get('rating')}
+		h4.item-title movie title
+		.module-item #{sub.get('title')}
+		h4.item-title movie year
+		.module-item #{sub.get('year')}
+		h4.item-title imdb rating
+		.module-item #{sub.get('rating')}
+		h4.item-title movie length
+		.module-item ~ #{Math.ceil(sub.getLastTime()/6e4)} min <br/>(according to sub file)

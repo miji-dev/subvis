@@ -77,16 +77,16 @@ SubModel.prototype.getTimeString = function (which) {
 }
 
 /**
- * returns the text array of the last subtitle sequence
- * @return {Array} the movie's last subtitle sequence
+ * returns the text string of the last subtitle sequence
+ * @return {String} the movie's last subtitle sequence
  */
 SubModel.prototype.getLastText = function () {
 	return this.sequences[this.sequences.length - 1].text;
 };
 
 /**
- * returns the text array of the first subtitle sequence
- * @return {Array} the movie's firt subtitle sequence
+ * returns the text string of the first subtitle sequence
+ * @return {String} the movie's firt subtitle sequence
  */
 SubModel.prototype.getFirstText = function () {
 	return this.sequences[0].text;
@@ -110,7 +110,7 @@ SubModel.prototype.getAllWordsString = function () {
 		if (i > 0) {
 			str += ' ';
 		}
-		str += this.sequences[i].text.join(' ');
+		str += this.sequences[i].text;
 	}
 	return str;
 };
@@ -136,7 +136,7 @@ SubModel.prototype.getSequencesPercent = function () {
 SubModel.prototype.getAllSequences = function () {
 	var arr = [];
 	for (var i = 0; i < this.sequences.length; i++) {
-		arr.push(this.sequences[i].text.join(' '));
+		arr.push(this.sequences[i].text);
 	}
 	return arr;
 };
@@ -152,10 +152,12 @@ SubModel.prototype.getSequenceCount = function () {
 /**
  * removes a part of the subtitles array
  * helpful for ads, spam and self-aduation
- * @param {Number}	start	where to start removing
- * @param {Number}	count	how many items should be removed
+ * @param {Number}	[start]	where to start removing
+ * @param {Number}	[count]	how many items should be removed
  */
 SubModel.prototype.removePart = function (start, count) {
+	start = start || 0;
+	count = count || 1;
 	this.sequences.splice(start, count);
 };
 

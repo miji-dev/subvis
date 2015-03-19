@@ -4,3 +4,10 @@
 - xml-rpc for node? yeah, piece of cake!
 - useragent for os api? came a few weeks after request
 - using opensubtitles client for node? sure, but first let me change the whole shit fuck
+- jade works after a whole bit of training
+- SubModel must be changed multiple times a day
+- SubModel can be passed to the client by manually stringifying all methods on the server ...
+- ... and eval them on the client
+- d3 ... better use a plugin
+- epoch works but is not comprehensive enough
+- c3 maybe?

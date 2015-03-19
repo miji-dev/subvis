@@ -40,7 +40,6 @@ var getSubtitle = function (id, cb) {
 		for (var i = 0; i < results.length; i++) {
 			var sub = results[i],
 				downloads = Number(sub.SubDownloadsCnt);
-
 			if (downloads > mostDownloads) {
 				movieName = movieName || sub.MovieName;
 				movieYear = movieYear || sub.MovieYear;
@@ -79,7 +78,7 @@ var preprocessSubtitle = function (subString) {
 			id: splitted[0],
 			from: formatTime(timestamp[0]),
 			to: formatTime(timestamp[1]),
-			text: splitted.slice(2, splitted.length),
+			text: splitted.slice(2, splitted.length).join(' '),
 		}
 		data[i].duration = data[i].to - data[i].from;
 	}

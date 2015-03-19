@@ -143,7 +143,6 @@ button {
 	-webkit-flex-wrap: wrap;
 	-ms-flex-wrap: wrap;
 	flex-wrap: wrap;
-	height: 600px;
 }
 
 .module {
@@ -155,22 +154,57 @@ button {
 	min-height: 200px;
 	width: 200px;
 }
-/* meta module */
+/* module items */
 
-.list-meta {}
-
-.meta-title {}
-
-.meta-item {
+.module-item {
 	text-align: right;
 	background: #efefef;
 	padding: 5px;
 }
-/* timeline module */
-.module-timeline {
-	
+/* meta module */
+
+.list-meta {}
+/* settings module */
+
+.module-settings .module-item {
+	padding-top: 24px;
+	position: relative;
 }
+
+.remove-btn {
+	background: #fff;
+	border-radius: 20px;
+	font-weight: bold;
+	height: 20px;
+	line-height: 20px;
+	position: absolute;
+	right: 2px;
+	text-align: center;
+	top: 2px;
+	width: 20px;
+}
+
+.remove-btn:hover {
+	background: #ccc;
+	cursor: pointer;
+}
+/* timeline module */
+
+.module-timeline {
+	width: 1200px;
+}
+
 #timeline-box {
 	width: 100%;
-	height: 500px;
+	height: 200px;
+}
+
+.timeline-range {
+	width: 50%;
+	margin: 5px;
+}
+
+.timeline-interval {
+	width: 30px;
+	margin: 5px;
 }
