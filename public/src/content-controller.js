@@ -6,6 +6,7 @@ SubVis.ContentController = (function () {
 		moduleSettings,
 		moduleMeta,
 		moduleTime,
+		moduleSequenceText,
 
 		subData,
 
@@ -15,7 +16,11 @@ SubVis.ContentController = (function () {
 		},
 
 		registerListeners = function () {
+			$contentContainer.off();
 			$contentContainer.on('removeClicked', onRemoveClicked);
+			$contentContainer.on('chartMouseover', function(event, data) {
+				moduleSequenceText.render(data)
+			})
 		},
 
 		onRemoveClicked = function (event, which) {
@@ -32,6 +37,7 @@ SubVis.ContentController = (function () {
 			moduleSettings = SubVis.ModuleSettings.init();
 			moduleMeta = SubVis.ModuleMeta.init();
 			moduleTime = SubVis.ModuleTime.init();
+			moduleSequenceText = SubVis.ModuleSequenceText.init();
 
 			registerListeners();
 		},

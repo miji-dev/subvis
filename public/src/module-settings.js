@@ -13,6 +13,7 @@ SubVis.ModuleSettings = (function () {
 		},
 
 		registerListeners = function () {
+			$el.off();
 			$el.on('click', '.remove-btn', onRemoveClicked);
 		},
 

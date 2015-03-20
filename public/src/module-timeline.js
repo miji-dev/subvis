@@ -6,10 +6,12 @@ SubVis.ModuleTimeline = (function () {
 		$rangeSlider,
 		$rangeSliderLabel,
 		areaChartInstance,
+		// constants
+		STARTINTERVAL = 1,
 
 		subData,
-		interval = 1,
-		max,
+		interval = STARTINTERVAL,
+		maxMinutes,
 
 		init = function (data) {
 			$el = $('#module-timeline');
@@ -26,30 +28,30 @@ SubVis.ModuleTimeline = (function () {
 		},
 
 		initUI = function (data) {
-			max = Math.ceil(data.getLastTime() / 6e4);
+			maxMinutes = Math.ceil(data.getLastTime() / 6e4);
 
 			subData = data;
 
 			$rangeSlider.attr({
-				max: max,
-				value: 1
+				max: maxMinutes,
+				value: interval
 			});
 
-			$rangeSliderLabel.val(1);
+			$rangeSliderLabel.val(interval);
 			render();
 		},
 
 		registerListeners = function () {
-			$rangeSlider.on('change', function () {
+			$rangeSlider.off().on('change', function () {
 				interval = $(this).val();
 				$rangeSliderLabel.val(interval);
 				render();
 			});
-			$rangeSliderLabel.on('change', function () {
+			$rangeSliderLabel.off().on('change', function () {
 				var val = Number($(this).val());
 
-				if (val > max) {
-					$(this).val(max);
+				if (val > maxMinutes) {
+					$(this).val(maxMinutes);
 				}
 				if (val < 1) {
 					$(this).val(1);
@@ -63,34 +65,82 @@ SubVis.ModuleTimeline = (function () {
 		render = function () {
 			var arr = subData.get('sequences'),
 				item,
-				values = [],
-				intervalMilli = interval * 6e4,
-				i;
+				xAxis = ['x'],
+				dataArray = [],
+				// what to display
+				sequences = ['sequences'],
+				wordCount = ['word count'],
+				sequenceCount = ['sequence count'],
 
-			for (i = 0; i < Math.ceil(max / interval); i++) {
-				values.push({
-					x: interval * i,
-					y: 0
-				});
+				intervalMilli = interval * 6e4,
+				prefillMax = Math.ceil(maxMinutes / interval),
+				i,
+				chart;
+
+			// prefill data arrays
+			for (i = 0; i < prefillMax; i++) {
+				xAxis[i + 1] = (interval * i) + ' - ' + (interval * (i + 1));
+				if (i == prefillMax - 1) {
+					xAxis[i + 1] = (interval * i) + ' - ' + maxMinutes;
+				}
+
+				wordCount[i + 1] = 0;
+				sequenceCount[i + 1] = 0;
+				sequences[i + 1] = '';
 			}
+
 			for (i = 0; i < arr.length; i++) {
 				item = arr[i];
 
-				curIndex = Math.floor(item.from / intervalMilli);
-				values[curIndex].y += item.text.length;
+				curIndex = Math.floor(item.from / intervalMilli) + 1;
+
+				wordCount[curIndex] += item.text.length;
+				sequenceCount[curIndex] ++;
+				sequences[curIndex] += '<p>' + item.text + '</p>';
 			}
-			var chartData = [
-				{
-					label: 'Timeline',
-					values: values
-				}
-			];
-			if (areaChartInstance) {
-				areaChartInstance.update(chartData);
+			dataArray.push(xAxis);
+			dataArray.push(wordCount);
+			dataArray.push(sequenceCount);
+
+			if (chart) {
+				chart.load({
+					columns: dataArray
+				});
 			} else {
-				areaChartInstance = $box.epoch({
-					type: 'bar',
-					data: chartData
+				chart = c3.generate({
+					bindto: '#timeline-box',
+					data: {
+						onclick: function (d, element) {
+							$box.trigger('chartMouseover', sequences[d.x + 1]);
+						},
+						x: 'x',
+						columns: dataArray,
+						types: {
+							'word count': 'bar'
+						},
+						axes: {
+							'word count': 'y',
+							'sequence count': 'y2'
+						}
+					},
+					transition: {
+						duration: 2000
+					},
+					axis: {
+						x: {
+							tick: {
+								culling: true
+							},
+							type: 'category'
+						},
+						y: {
+							label: 'Word Count'
+						},
+						y2: {
+							show: true,
+							label: 'Sequence Count'
+						}
+					}
 				});
 			}
 		};

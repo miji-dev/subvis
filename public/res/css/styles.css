@@ -196,7 +196,7 @@ button {
 
 #timeline-box {
 	width: 100%;
-	height: 200px;
+	height: 400px;
 }
 
 .timeline-range {
@@ -207,4 +207,18 @@ button {
 .timeline-interval {
 	width: 30px;
 	margin: 5px;
+}
+/* module sequence text */
+
+#module-sequence-text {
+	width: 200px;
+}
+
+#current-sequences {
+	overflow-y: scroll;
+	max-height: 300px;
+}
+
+#current-sequences p {
+	margin: 5px 0;
 }
