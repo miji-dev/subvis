@@ -3,6 +3,7 @@ SubVis.MainController = (function () {
 		searchBoxView,
 		contentController,
 		$body,
+		SERVER = 'http://subvis-wiese4-3.c9.io/',
 
 		init = function () {
 			$body = $('body');
@@ -23,7 +24,7 @@ SubVis.MainController = (function () {
 		},
 
 		onSearchSubtitle = function (event, data) {
-			$.get('http://localhost:3000/' + data, function(data) {
+			$.get(SERVER + data, function(data) {
 				searchBoxView.clipToBar();
 				contentController.render(data);
 			});

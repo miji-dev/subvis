@@ -1,12 +1,11 @@
 var fs = require('fs'),
 	path = require('path'),
 	SUB_LIST_PATH = path.join('app', 'txt', 'subs.txt'),
-	SUB_DELIMITER1 = '\r\n',
+	SUB_DELIMITER1 = '\n',
 	SUB_DELIMITER2 = '\t',
 	subs = [],
 
 	init = function () {
-		console.log("start");
 		readFile();
 	},
 
@@ -20,7 +19,6 @@ var fs = require('fs'),
 			subs.push(r);
 		}
 		subs.pop();
-		console.log("done");
 	},
 
 	getSubs = function () {
