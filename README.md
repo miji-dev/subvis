@@ -3,7 +3,7 @@ Visualized Subtitle Analysis
 
 ## Conventions for Contributors
 - Master branch ALWAYS contains a working version
-- We use node.js
+- We use node.js hosted on cloud9
 - The code is organized strictly modular
 - We use issues to track not yet done work
 - Each issue is handled in an own branch
@@ -15,7 +15,8 @@ Visualized Subtitle Analysis
   - Templating with Jade
 - Client
   - D3.js
-  - jQuery? Not sure if neccessary, maybe d3 is enough
+  - C3.js for easier D3 handling
+  - jQuery
 
 ## Things to do
 1. List of available subtitles --> works
@@ -43,9 +44,14 @@ Visualized Subtitle Analysis
   - server-side
 6. Module Templates
   - Meta Module
+  - Timeline Module
+  - Settings Module
+  - Sequence Text Module
+  - Time Statistic Module
   - ... Module
 7. Visualise
-  - Node.js D3
+  - D3/C3
+  - plain text
   - client-side
 
 ## Thoughts
@@ -63,6 +69,3 @@ Visualized Subtitle Analysis
   - subvis/single?name=Pulp+Fiction --> queryString routing via movie name
   - subvis/multi?id1=1583&id2=1234 --> queryString routing using two movies
 - Or no advanced routing and just use a plain search field based UI
-
-## Open Questions
-- Do we need to persist data? I don't think so
