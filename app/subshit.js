@@ -30,6 +30,7 @@ var getSubtitle = function (id, cb) {
 
 	subshit.api.searchID(TOKEN, 'eng', id).done(function (results) {
 		var mostDownloads = 0,
+			bestRated = 0,
 			bestID,
 			subLink,
 			movieName = '',
@@ -39,12 +40,15 @@ var getSubtitle = function (id, cb) {
 
 		for (var i = 0; i < results.length; i++) {
 			var sub = results[i],
-				downloads = Number(sub.SubDownloadsCnt);
-			if (downloads > mostDownloads) {
+				downloads = Number(sub.SubDownloadsCnt),
+				subRating = Number(sub.SubRating);
+			if(subRating > bestRated) {
+//			if (downloads > mostDownloads) {
 				movieName = movieName || sub.MovieName;
 				movieYear = movieYear || sub.MovieYear;
 				movieRating = movieRating|| sub.MovieImdbRating;
-				mostDownloads = downloads;
+//				mostDownloads = downloads;
+				bestRated = subRating;
 				bestID = i;
 				subLink = sub.SubDownloadLink;
 			}

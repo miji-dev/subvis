@@ -71,22 +71,29 @@ SubVis.ModuleTimeline = (function () {
 				sequences = ['sequences'],
 				wordCount = ['word count'],
 				sequenceCount = ['sequence count'],
+				fromTo = ['from to'],
+				from = ['from'],
+				to = ['to'],
 
 				intervalMilli = interval * 6e4,
 				prefillMax = Math.ceil(maxMinutes / interval),
 				i,
+				curIndex,
 				chart;
 
 			// prefill data arrays
 			for (i = 0; i < prefillMax; i++) {
-				xAxis[i + 1] = (interval * i) + ' - ' + (interval * (i + 1));
+				xAxis[i + 1] = (interval * i) + '-' + (interval * (i + 1));
 				if (i == prefillMax - 1) {
-					xAxis[i + 1] = (interval * i) + ' - ' + maxMinutes;
+					xAxis[i + 1] = (interval * i) + '-' + maxMinutes;
 				}
 
 				wordCount[i + 1] = 0;
 				sequenceCount[i + 1] = 0;
-				sequences[i + 1] = '';
+				sequences[i + 1] = [];
+				fromTo[i + 1] = {};
+				from[i+1] = [];
+				to [i+1] = [];
 			}
 
 			for (i = 0; i < arr.length; i++) {
@@ -96,7 +103,11 @@ SubVis.ModuleTimeline = (function () {
 
 				wordCount[curIndex] += item.text.length;
 				sequenceCount[curIndex] ++;
-				sequences[curIndex] += '<p>' + item.text + '</p>';
+				sequences[curIndex].push(item.text);
+				fromTo[curIndex].from = fromTo[curIndex].from || item.from;
+				fromTo[curIndex].to = item.to;
+				from[curIndex].push(item.from);
+				to[curIndex].push(item.to);
 			}
 			dataArray.push(xAxis);
 			dataArray.push(wordCount);
@@ -111,7 +122,13 @@ SubVis.ModuleTimeline = (function () {
 					bindto: '#timeline-box',
 					data: {
 						onclick: function (d, element) {
-							$box.trigger('chartMouseover', sequences[d.x + 1]);
+							$box.trigger('chartMouseover', {
+								text: sequences[d.x + 1], 
+								fromTo: fromTo[d.x + 1], 
+								count: sequenceCount[d.x + 1],
+								from: from[d.x + 1],
+								to: to[d.x + 1]
+							});
 						},
 						x: 'x',
 						columns: dataArray,
@@ -123,11 +140,9 @@ SubVis.ModuleTimeline = (function () {
 							'sequence count': 'y2'
 						}
 					},
-					transition: {
-						duration: 2000
-					},
 					axis: {
 						x: {
+							label: 'duration in minutes',
 							tick: {
 								culling: true
 							},

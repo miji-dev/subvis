@@ -7,6 +7,9 @@ SubVis.ContentController = (function () {
 		moduleMeta,
 		moduleTime,
 		moduleSequenceText,
+		moduleFinder,
+		//helpers
+		currentIntervalData,
 
 		subData,
 
@@ -18,9 +21,20 @@ SubVis.ContentController = (function () {
 		registerListeners = function () {
 			$contentContainer.off();
 			$contentContainer.on('removeClicked', onRemoveClicked);
-			$contentContainer.on('chartMouseover', function(event, data) {
-				moduleSequenceText.render(data)
-			})
+			$contentContainer.on('chartMouseover', onChartMouseover);
+			$contentContainer.on('findWords', function(event, data) {
+				if(data.length > 2) {
+					var str = subData.getAllWordsString();
+					var regExp = new RegExp(data, 'gi');
+					var res = (str.match(regExp) || []).length;
+					moduleFinder.render(res);
+				}
+			});
+		},
+		
+		onChartMouseover = function(event, data) {
+			currentIntervalData = data;
+			moduleSequenceText.render(data);
 		},
 
 		onRemoveClicked = function (event, which) {
@@ -37,7 +51,8 @@ SubVis.ContentController = (function () {
 			moduleSettings = SubVis.ModuleSettings.init();
 			moduleMeta = SubVis.ModuleMeta.init();
 			moduleTime = SubVis.ModuleTime.init();
-			moduleSequenceText = SubVis.ModuleSequenceText.init();
+			moduleSequenceText = SubVis.ModuleSequenceText.init(subData);
+			moduleFinder = SubVis.ModuleFinder.init();
 
 			registerListeners();
 		},
@@ -49,12 +64,14 @@ SubVis.ContentController = (function () {
 			moduleTime.render(timeArray);
 			
 			moduleTimeline.initUI(subData);
+			
+			moduleSequenceText.render(currentIntervalData);
 		},
 
 		transformJSON = function (jsonObj) {
 			for (var key in jsonObj) {
 				var value = jsonObj[key];
-				if (value && (typeof value === 'string') && value.indexOf("function") === 0) {        
+				if (value && (typeof value === 'string') && value.indexOf("function") === 0) {
 					eval("var jsFunc = " + value);
 					jsonObj[key] = jsFunc;
 				}

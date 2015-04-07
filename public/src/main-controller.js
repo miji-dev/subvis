@@ -3,7 +3,7 @@ SubVis.MainController = (function () {
 		searchBoxView,
 		contentController,
 		$body,
-		SERVER = 'http://subvis-wiese4-3.c9.io/',
+		SERVER = 'http://subvis-wiese4-4.c9.io/',
 
 		init = function () {
 			$body = $('body');

@@ -172,8 +172,9 @@ button {
 }
 
 .remove-btn {
-	background: #fff;
+	background: #efefef;
 	border-radius: 20px;
+	color: #F62459;
 	font-weight: bold;
 	height: 20px;
 	line-height: 20px;
@@ -185,13 +186,14 @@ button {
 }
 
 .remove-btn:hover {
-	background: #ccc;
+	background: #fff;
 	cursor: pointer;
 }
+
 /* timeline module */
 
 .module-timeline {
-	width: 1200px;
+	width: 100%;
 }
 
 #timeline-box {
@@ -208,12 +210,27 @@ button {
 	width: 30px;
 	margin: 5px;
 }
+
 /* module sequence text */
 
 #module-sequence-text {
-	width: 200px;
+	width: 100%;
 }
 
+.sequence-text-item {
+	display: block;
+	margin: 2px;
+	padding: 2px;
+}
+.sequence-text-item span {
+	background: #efefef;
+	display: inline-block;
+	padding: 4px;
+}
+.sequence-text-item .sequence-text-time {
+	background: #333;
+	color: #efefef;
+}
 #current-sequences {
 	overflow-y: scroll;
 	max-height: 300px;

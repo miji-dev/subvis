@@ -23,8 +23,8 @@ SubVis.ModuleSettings = (function () {
 		},
 
 		onRemoveClicked = function (event) {
-			$el.trigger('removeClicked', event.target.id.split('-')[2]);
-			console.log(event);
+			var target = event.target;
+			$el.trigger('removeClicked', target.id.split('-')[2]);
 		};
 
 	that.init = init;
