@@ -2,11 +2,15 @@ SubVis.ModuleFinder = (function() {
     var that = {},
         $el,
         $input,
+        $resultList,
+        results,
+        curWord,
 
         init = function() {
             $el = $('#module-finder');
             $input = $el.find('#word-finder');
-            $resultBox = $el.find('#finder-results-div');
+            $resultList = $el.find('#finder-results-div');
+            results = [];
             registerListeners();
             return that;
         },
@@ -16,15 +20,24 @@ SubVis.ModuleFinder = (function() {
         },
         
         handleKeys = function(event) {
-            var key = event.keyCode;
+            var key = event.keyCode,
+                val = event.target.value;
+
             if(key === 13) {
-                $el.trigger('findWords',event.target.value);
+                if(results.indexOf(val) < 0 && val.length > 2) {
+                    results.push(val);
+                    curWord = val;
+                    $el.trigger('findWords', val);
+                }
             }
         },
         
         render = function(data) {
-            $resultBox.find('.finder-item').remove();
-            $resultBox.append('<p class="finder-item">Found: ' + data + '</p>');
+            if(results.length > 5) {
+                results.splice(0,1);
+                $resultList.find('li').last().remove();
+            }
+            $resultList.prepend('<li class="finder-item">' + curWord + ' | Found: ' + data + '</li>');
         };
     
     that.init = init;

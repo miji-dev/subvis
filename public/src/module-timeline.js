@@ -12,6 +12,7 @@ SubVis.ModuleTimeline = (function () {
 		subData,
 		interval = STARTINTERVAL,
 		maxMinutes,
+		$activeElement = 0,
 
 		init = function (data) {
 			$el = $('#module-timeline');
@@ -122,6 +123,11 @@ SubVis.ModuleTimeline = (function () {
 					bindto: '#timeline-box',
 					data: {
 						onclick: function (d, element) {
+							if($activeElement) {
+								$activeElement.css({'fill': 'rgb(31,119,180)', 'stroke': 'rgb(31,119,180)'});
+							}
+							$activeElement = $('.c3-shape-' + d.x);
+							$activeElement.css({'fill': 'black', 'stroke': 'black'});
 							$box.trigger('chartMouseover', {
 								text: sequences[d.x + 1], 
 								fromTo: fromTo[d.x + 1], 

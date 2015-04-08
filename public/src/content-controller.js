@@ -8,6 +8,7 @@ SubVis.ContentController = (function () {
 		moduleTime,
 		moduleSequenceText,
 		moduleFinder,
+		moduleWordCloud,
 		//helpers
 		currentIntervalData,
 
@@ -23,12 +24,10 @@ SubVis.ContentController = (function () {
 			$contentContainer.on('removeClicked', onRemoveClicked);
 			$contentContainer.on('chartMouseover', onChartMouseover);
 			$contentContainer.on('findWords', function(event, data) {
-				if(data.length > 2) {
-					var str = subData.getAllWordsString();
-					var regExp = new RegExp(data, 'gi');
-					var res = (str.match(regExp) || []).length;
-					moduleFinder.render(res);
-				}
+				var str = subData.getAllWordsString();
+				var regExp = new RegExp(data, 'gi');
+				var res = (str.match(regExp) || []).length;
+				moduleFinder.render(res);
 			});
 		},
 		
@@ -53,7 +52,7 @@ SubVis.ContentController = (function () {
 			moduleTime = SubVis.ModuleTime.init();
 			moduleSequenceText = SubVis.ModuleSequenceText.init(subData);
 			moduleFinder = SubVis.ModuleFinder.init();
-
+			moduleWordCloud = SubVis.ModuleWordCloud.init(subData.getAllWordsString());
 			registerListeners();
 		},
 
@@ -64,8 +63,12 @@ SubVis.ContentController = (function () {
 			moduleTime.render(timeArray);
 			
 			moduleTimeline.initUI(subData);
+			console.log("asdf")
+			moduleWordCloud.render(subData.getAllWordsString());
 			
-			moduleSequenceText.render(currentIntervalData);
+			if(currentIntervalData) {
+				moduleSequenceText.render(currentIntervalData);
+			}
 		},
 
 		transformJSON = function (jsonObj) {
