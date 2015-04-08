@@ -15,8 +15,8 @@ NlProcessor = (function () {
 
 			this.tokenizer = new natural.WordTokenizer();
 			this.stemmer = natural.PorterStemmer;
-			stemmer.attach();
-			this.TfIdf = natural.TfIdf,;
+			this.stemmer.attach();
+			this.TfIdf = natural.TfIdf;
 			// no need for machine learning so far
 			//this.classifier = new natural.BayesClassifier(stemmer);
 
@@ -25,31 +25,22 @@ NlProcessor = (function () {
 
 		getSegmentedSentences = function(text) {
 			var sentences = nlp.sentences(text);
-			var count = sentences.length
-
-			return sentences, count;
+			return sentences;
 		},
 
 		// do this after stemming!
-		getSentenceStructure = function(sentence) {
+		getSentenceStructure = function(sens) {
 			// can we do this with several sentences?
 			//if (count == null) count = 0;
-			var s = nlp.pos(sentence).sentences[0]
-			var text = s.text();
-			var tags = s.tags();
-			var structure = {
-				nouns: s.nouns(),
-				adjectives: s.adjectives(),
-				adverbs: s.adverbs(),
-				verbs: s.verbs(),
-				values: s.values()
-			}; 
-			return structure;
+			for (var i = 0; i < sens.length; i++) {
+				sens[i] = nlp.pos(sens[i]).sentences[0];
+			}
+			return sens;
 		},
 
 		// named-entity recognition
 		getEntityNames = function(text) {
-			entityNames = nlp.spot(text);
+			var entityNames = nlp.spot(text);
 			//eliminate doubles and count
 			//2d array?
 
@@ -57,6 +48,10 @@ NlProcessor = (function () {
 		},
 
 		getTokenizedAndStemmedWords = function(text) {
+			//var stm = natural.PorterStemmer;
+			//stm.attach();
+			//console.log('i stemmed words.', text);
+			//.tokenizeAndStem()); 
 			return text.tokenizeAndStem();
 		},
 
@@ -97,7 +92,7 @@ NlProcessor = (function () {
 		// input a single subtitle sequence, loop for getting a score per sub
 		getSentimentScore = function(sequence) {
 			var score = sentiment(sequence);
-			console.dir(score);
+			//console.dir(score);
 			// there r two attributes in score (score and comparative)
 			return score;
 		};
@@ -136,3 +131,5 @@ NlProcessor = (function () {
 	that.getSentimentScore = getSentimentScore;
 	return that;
 })();
+
+module.exports = NlProcessor;
