@@ -2,8 +2,8 @@ SubVis.ModuleWordCloud = (function() {
     var that = {},
         $el,
         wordcloud,
-        w = 960,
-        h = 600,
+        w = 500,
+        h = 500,
 
         words = [],
         scale = 1,
@@ -99,7 +99,7 @@ SubVis.ModuleWordCloud = (function() {
                 .font('Impact')
                 //      .spiral(d3.select("input[name=spiral]:checked").property("value"));
 
-            fontSize = d3.scale[ /*d3.select("input[name=scale]:checked").property("value")*/ 'log']().range([10, 100]);
+            fontSize = d3.scale[ /*d3.select("input[name=scale]:checked").property("value")*/ 'log']().range([10, 50]);
             if (tags.length) fontSize.domain([+tags[tags.length - 1].value || 1, +tags[0].value]);
             words = [];
             layout.stop().words(tags.slice(0, max = Math.min(tags.length, + /*d3.select("#max").property("value")*/ 250))).start();
@@ -162,7 +162,6 @@ SubVis.ModuleWordCloud = (function() {
 
         // Converts a given word cloud to image/png.
         downloadPNG = function() {
-            console.log("asdf")
             var canvas = document.createElement("canvas"),
                 c = canvas.getContext("2d");
             canvas.width = w;

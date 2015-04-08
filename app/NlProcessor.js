@@ -1,4 +1,4 @@
-NlProcessor = (function () {
+var NlProcessor = (function () {
 	var that = {},
 		nlp = require("nlp_compromise"),
 		natural = require('natural'),
@@ -32,10 +32,12 @@ NlProcessor = (function () {
 		getSentenceStructure = function(sens) {
 			// can we do this with several sentences?
 			//if (count == null) count = 0;
+			var arr = [];
 			for (var i = 0; i < sens.length; i++) {
-				sens[i] = nlp.pos(sens[i]).sentences[0];
+				var c = {content: sens[i]};
+				arr.push(c);
 			}
-			return sens;
+			return arr;
 		},
 
 		// named-entity recognition

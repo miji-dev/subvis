@@ -5,14 +5,15 @@ SubVis.ModuleTimeline = (function () {
 		$control,
 		$rangeSlider,
 		$rangeSliderLabel,
-		areaChartInstance,
 		// constants
 		STARTINTERVAL = 1,
 
-		subData,
+		subModel,
+
 		interval = STARTINTERVAL,
 		maxMinutes,
 		$activeElement = 0,
+		chart,
 
 		init = function (data) {
 			$el = $('#module-timeline');
@@ -31,7 +32,7 @@ SubVis.ModuleTimeline = (function () {
 		initUI = function (data) {
 			maxMinutes = Math.ceil(data.getLastTime() / 6e4);
 
-			subData = data;
+			subModel = data;
 
 			$rangeSlider.attr({
 				max: maxMinutes,
@@ -64,7 +65,7 @@ SubVis.ModuleTimeline = (function () {
 		},
 
 		render = function () {
-			var arr = subData.get('sequences'),
+			var arr = subModel.get('sequences'),
 				item,
 				xAxis = ['x'],
 				dataArray = [],
@@ -110,6 +111,7 @@ SubVis.ModuleTimeline = (function () {
 				from[curIndex].push(item.from);
 				to[curIndex].push(item.to);
 			}
+			
 			dataArray.push(xAxis);
 			dataArray.push(wordCount);
 			dataArray.push(sequenceCount);
@@ -128,9 +130,9 @@ SubVis.ModuleTimeline = (function () {
 							}
 							$activeElement = $('.c3-shape-' + d.x);
 							$activeElement.css({'fill': 'black', 'stroke': 'black'});
-							$box.trigger('chartMouseover', {
-								text: sequences[d.x + 1], 
-								fromTo: fromTo[d.x + 1], 
+							$box.trigger('timelineElementClicked', {
+								text: sequences[d.x + 1],
+								fromTo: fromTo[d.x + 1],
 								count: sequenceCount[d.x + 1],
 								from: from[d.x + 1],
 								to: to[d.x + 1]

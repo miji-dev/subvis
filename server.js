@@ -3,6 +3,7 @@ var app = express();
 var subsreader = require('./app/subsreader');
 var sublist = subsreader.getSubs();
 var subshit = require('./app/subshit');
+var CircularJSON = require('circular-json');
 
 // Needed to deliver static files (css, img, etc) 
 app.use(express.static('public'));
@@ -37,6 +38,8 @@ app.get(/^\/\d+$/, function (req, res) {
 });
 
 function transformJSONObject(data) {
+	console.log("transformJSON")
+//	var newObj = CircularJSON.parse(CircularJSON.stringify(data));
 	var newObj = JSON.parse(JSON.stringify(data));
 	for (var key in data) {
 		if (typeof data[key] === 'function') {

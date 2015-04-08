@@ -26,7 +26,7 @@ SubVis.ModuleSequenceText = (function () {
 				temp = '';
 			if(data.fromTo) {
 				for(var i = 0; i < data.text.length; i++) {
-					var item = data.text[i];
+					var item = nlp.pos(data.text[i]);
 					temp += '<span class="sequence-text-item"><span class="sequence-text-time">' + formatTime(data.from[i]) + ' > ' + formatTime(data.to[i]) + '</span><span class="sequence-text-text">' + item + '</span></span>';
 				}
 				data.text = temp;

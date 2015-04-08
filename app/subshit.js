@@ -93,55 +93,62 @@ var preprocessSubtitle = function (subString) {
 		}
 		data[i].duration = data[i].to - data[i].from;
 	}
+	
+//	return data;
 	subModel.setSequences(data);
-
-	callback(subModel);
 };
 
-var processSequences = function() {
+var processSequences2 = function(data) {
 	nlp = NlProcessor.init();
-	// get all sequences form submodel
 	var seqs = subModel.getSequences();
 	// add to each sequence its structured sentences
 	for (var i = 0; i < seqs.length; i++) {
-		// create sentences
-		seqs[i].sentences = nlp.getSentenceStructure(nlp.getSegmentedSentences(seqs[i].text));
-		// stemmed Tokens
-		for (var x = 0; x < seqs[i].sentences.length; x++) {
-			//console.log("Sent: ", seqs[i].sentences);
-			seqs[i].sentences[x].stemmedTokens = nlp.getTokenizedAndStemmedWords(seqs[i].sentences[x].text());
-			// normalized Sentence
-			seqs[i].sentences[x].normalized = "";
-			for (var j = 0; j < seqs[i].sentences[x].stemmedTokens.length; j++) {
-				if (j != 0) {
-					seqs[i].sentences[x].normalized = seqs[i].sentences[x].normalized + " ";
-				}
-				seqs[i].sentences[x].normalized = seqs[i].sentences[x].normalized + seqs[i].sentences[x].stemmedTokens[j];
-			}
-			// get sentiment score of sentence
-			seqs[i].sentences[x].sentiment = nlp.getSentimentScore(seqs[i].sentences[x].normalized);
-			// get entity names in sentence
-			seqs[i].sentences[x].ents = nlp.getEntityNames(seqs[i].sentences[x].normalized);
-		}
-		// normalized Text of sequence
-		seqs[i].normText = "";
-		for (var k = 0; k < seqs[i].sentences.length; k++) {
-				if (k != 0) {
-					seqs[i].normText = seqs[i].normText + " ";
-				}
-				seqs[i].normText = seqs[i].normText + seqs[i].sentences[k].normalized;
-			}
-		// get senitment score of seq text
-		seqs[i].sentiment = nlp.getSentimentScore(seqs[i].normText);
-		// get entity names in seq
-		seqs[i].ents = nlp.getEntityNames(seqs[i].normText);
+		seqs[i].stemmedTokens = nlp.getTokenizedAndStemmedWords(seqs[i].text);
+		seqs[i].sentiment = nlp.getSentimentScore(seqs[i].text);
 	}
+	subModel.setSequences(seqs);
+}
 
-	//var logNum = 0;
-	//console.log("Sentence: ", seqs[logNum].sentences[logNum]);	
-	//console.log("Pos: ", seqs[logNum].sentences[logNum].tokens[0].pos);
-	//console.log("Analy: ", seqs[logNum].sentences[logNum].tokens[0].analysis);
+var processSequences = function(data) {
+	nlp = NlProcessor.init();
+	// get all sequences form submodel
+	var seqs = data;
+	// add to each sequence its structured sentences
+	for (var i = 0; i < seqs.length; i++) {
+		// create sentences
+		var sents = nlp.getSentenceStructure(nlp.getSegmentedSentences(seqs[i].text));
+		var nText = "";
+		// stemmed Tokens
+		for (var x = 0; x < sents.length; x++) {
+			//console.log("Sent: ", seqs[i].sentences);
+			sents[x].stemmedTokens = nlp.getTokenizedAndStemmedWords(sents[x].content);
+			// normalized Sentence
+			var norm = "";
+			for (var j = 0; j < sents[x].stemmedTokens.length; j++) {
+				if (j != 0) {
+					norm = norm + " ";
+				}
+				norm = norm + sents[x].stemmedTokens[j];
+			}
+			sents[x].normalized = norm;
+			// get sentiment score of sentence
+			sents[x].sentiment = nlp.getSentimentScore(norm);
+			// get entity names in sentence
+			sents[x].ents = nlp.getEntityNames(norm);
 
+			if (x != 0) {
+				nText = nText + " ";
+			}
+			nText = nText + norm;
+		}
+		seqs[i].sentences = sents;
+		// normalized Text of sequence
+		seqs[i].normText = nText;
+		// get senitment score of seq text
+		seqs[i].sentiment = nlp.getSentimentScore(nText);
+		// get entity names in seq
+		seqs[i].ents = nlp.getEntityNames(nText);
+	}
 	subModel.setSequences(seqs);
 };
 
@@ -159,16 +166,14 @@ var onSubtitleDownloaded = function (res) {
 	gunzip.on('data', function (chunk) {
 		result.push(chunk.toString());
 	}).on('end', function () {
-		preprocessSubtitle(result.join(''));
-		processSequences();
-		var test = subModel.getDataForIntervall();
-		console.log("wordcount: ", test.statistics.count);
-		//console.log("lists: ", test.lists.normList[0]);
-		console.log("listsl1: ", test.lists.wordList.length);
-		console.log("listsl2: ", test.lists.normList.length);
-		console.log("eigennamen: ", test.lists.entityList);
+		preprocessSubtitle(result.join(''))
+		processSequences2();
+//		processSequences(preprocessSubtitle(result.join('')));
+//		processSequences();
+//		subModel.update();
+	
+	callback(subModel);
 
-		
 	}).on('error', function (err) {
 		console.log('res error: ', err);
 	});

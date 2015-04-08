@@ -12,7 +12,7 @@ SubVis.ContentController = (function () {
 		//helpers
 		currentIntervalData,
 
-		subData,
+		subModel,
 
 		init = function () {
 			$contentContainer = $('#content-container');
@@ -22,49 +22,49 @@ SubVis.ContentController = (function () {
 		registerListeners = function () {
 			$contentContainer.off();
 			$contentContainer.on('removeClicked', onRemoveClicked);
-			$contentContainer.on('chartMouseover', onChartMouseover);
+			$contentContainer.on('timelineElementClicked', onTimelineElementClicked);
 			$contentContainer.on('findWords', function(event, data) {
-				var str = subData.getAllWordsString();
+				var str = subModel.getAllWordsString();
 				var regExp = new RegExp(data, 'gi');
 				var res = (str.match(regExp) || []).length;
 				moduleFinder.render(res);
 			});
 		},
 		
-		onChartMouseover = function(event, data) {
-			currentIntervalData = data;
+		onTimelineElementClicked = function(event, data) {
+			currentIntervalData = data;//subModel.getDataForIntervall(data.fromTo);
 			moduleSequenceText.render(data);
 		},
 
 		onRemoveClicked = function (event, which) {
 			if (which == 'first') {
-				subData.removePart();
+				subModel.removePart();
 			} else {
-				subData.removePart(subData.sequences.length - 1);
+				subModel.removePart(subModel.sequences.length - 1);
 			}
 			renderModules();
 		},
 
 		initModules = function () {
-			moduleTimeline = SubVis.ModuleTimeline.init(subData);
+			console.log(subModel)
+			moduleTimeline = SubVis.ModuleTimeline.init(subModel);
 			moduleSettings = SubVis.ModuleSettings.init();
 			moduleMeta = SubVis.ModuleMeta.init();
 			moduleTime = SubVis.ModuleTime.init();
-			moduleSequenceText = SubVis.ModuleSequenceText.init(subData);
+			moduleSequenceText = SubVis.ModuleSequenceText.init(subModel);
 			moduleFinder = SubVis.ModuleFinder.init();
-			moduleWordCloud = SubVis.ModuleWordCloud.init(subData.getAllWordsString());
+			moduleWordCloud = SubVis.ModuleWordCloud.init(subModel.getAllWordsString());
 			registerListeners();
 		},
 
 		renderModules = function () {
-			moduleSettings.render(subData.getFirstText(), subData.getLastText());
+			moduleSettings.render(subModel.getFirstText(), subModel.getLastText());
 
-			var timeArray = [subData.getTimeString('length'), subData.getTimeString('first'), subData.getSequenceCount(), subData.getTimeString('speechduration')];
+			var timeArray = [subModel.getTimeString('length'), subModel.getTimeString('first'), subModel.getSequenceCount(), subModel.getTimeString('speechduration')];
 			moduleTime.render(timeArray);
 			
-			moduleTimeline.initUI(subData);
-			console.log("asdf")
-			moduleWordCloud.render(subData.getAllWordsString());
+			moduleTimeline.initUI(subModel);
+			moduleWordCloud.render(subModel.getAllWordsString());
 			
 			if(currentIntervalData) {
 				moduleSequenceText.render(currentIntervalData);
@@ -84,7 +84,7 @@ SubVis.ContentController = (function () {
 
 		render = function (el, which) {
 			$contentContainer.empty().append($(el).fadeIn());
-			subData = transformJSON(sub_data);
+			subModel = transformJSON(sub_data);
 
 			initModules();
 		};
