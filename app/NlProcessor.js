@@ -32,12 +32,10 @@ var NlProcessor = (function () {
 		getSentenceStructure = function(sens) {
 			// can we do this with several sentences?
 			//if (count == null) count = 0;
-			var arr = [];
 			for (var i = 0; i < sens.length; i++) {
-				var c = {content: sens[i]};
-				arr.push(c);
+				sens[i] = nlp.pos(s[i]).sentences[0];
 			}
-			return arr;
+			return sens;
 		},
 
 		// named-entity recognition
@@ -105,21 +103,6 @@ var NlProcessor = (function () {
 			// add key values pairs in object based on wordlist and scores
 			var result = sentiment(sequence, injectWords);
 		};
-		*/	
-
-		/** 
-		Weitere Ideen zur Analyse:
-		
-		-	Anzahl der Sätze insgesamt, durchschnittliche Länge von Sätzen, längster vs. kürzester Satz, gesamt Wortanzahl
-		-	Grundformenreduktion und Normalisierung: verschiedene Wörter, häufigste Wörter
-		-	Verschiedene Wortarten und deren Häufigkeiten  häufigstes Verb, Nomen und soweiter,
-		-	Eigennamen und ihre Häufigkeiten
-		-	Vorkommen von zahlen (datum, jahreszahl, nummer …)
-		-	Wörter/Sätze pro minute (wo wird viel gesprochen wo wenig)
-		-	Sentiment Score für bestimmte Passagen (mittelwert berechnen, anzeigen wieviele wörter mit wörterbuchabgeglichen und deren score + gesamtscore)
-		-	Tf-Id von häufigsten Wörter vergleichen mit anderem Film (in der vergleichenden Darstellung von zwei (oder mehreren) filmen
-
-
 		*/
 
 	that.init = init;

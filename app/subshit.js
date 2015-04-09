@@ -128,6 +128,7 @@ var processSequences2 = function(data) {
 	subModel.setSequences(seqs);
 }
 
+// deprecated due to nlp.getSentenceStructure (.pos function) which can't be casted to client
 var processSequences = function(data) {
 	nlp = NlProcessor.init();
 	// get all sequences form submodel
@@ -140,7 +141,7 @@ var processSequences = function(data) {
 		// stemmed Tokens
 		for (var x = 0; x < sents.length; x++) {
 			//console.log("Sent: ", seqs[i].sentences);
-			sents[x].stemmedTokens = nlp.getTokenizedAndStemmedWords(sents[x].content);
+			sents[x].stemmedTokens = nlp.getTokenizedAndStemmedWords(sents[x].text());
 			// normalized Sentence
 			var norm = "";
 			for (var j = 0; j < sents[x].stemmedTokens.length; j++) {
