@@ -99,7 +99,7 @@ SubVis.ModuleWordCloud = (function() {
                 .font('Impact')
                 //      .spiral(d3.select("input[name=spiral]:checked").property("value"));
 
-            fontSize = d3.scale[ /*d3.select("input[name=scale]:checked").property("value")*/ 'log']().range([10, 50]);
+            fontSize = d3.scale[ /*d3.select("input[name=scale]:checked").property("value")*/ 'log']().range([10, 100]);
             if (tags.length) fontSize.domain([+tags[tags.length - 1].value || 1, +tags[0].value]);
             words = [];
             layout.stop().words(tags.slice(0, max = Math.min(tags.length, + /*d3.select("#max").property("value")*/ 250))).start();

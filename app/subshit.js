@@ -13,6 +13,11 @@ var SUBLIST;
 
 var callback;
 
+// online for pulp dummy
+var fs = require('fs'),
+	path = require('path'),
+	SUB_LIST_PATH = path.join('app', 'txt', 'pulp.txt');
+
 subshit.api.on("login", function (token) {
 	console.log("login: " + token);
 });
@@ -21,14 +26,30 @@ subshit.api.on("search", function () {
 	console.log("searching ...")
 });
 
-subshit.api.login().done(
+/*subshit.api.login().done(
 	function (token) {
 		TOKEN = token;
 	}
 );
+*/
+var getSubtitle = function(id, cb) {
+	callback = cb;
+	var data = fs.readFileSync(SUB_LIST_PATH).toString();
+	
+	subModel = new SubModel(id, "Pulp Fiction", '1994', '8.9');
+	preprocessSubtitle(data);
+	callback(subModel);
+	
+/*	for (var i = 0; i < rows.length; i++) {
+		var r = processRow(rows[i]);
+		subs.push(r);
+	}
+	subs.pop();
+*/
+}
 
 // public method to get a specific subtitle file
-var getSubtitle = function (id, cb) {
+var getSubtitle1 = function (id, cb) {
 	callback = cb;
 
 	subshit.api.searchID(TOKEN, 'eng', id).done(function (results) {
@@ -77,12 +98,11 @@ var downloadSubtitle = function (link) {
 };
 
 var preprocessSubtitle = function (subString) {
-	var data = subString.split(/\r\n\r\n/g),
+	var data = subString.split(/\n\n/g), // /\r\n\r\n/g
 		i,
 		l;
-
 	for (i = 0, l = data.length; i < l; i++) {
-		var splitted = data[i].split(/\r\n/);
+		var splitted = data[i].split(/\n/); // /\r\n/
 		var timestamp = splitted[1].split(' --> ');
 
 		data[i] = {
@@ -93,7 +113,6 @@ var preprocessSubtitle = function (subString) {
 		}
 		data[i].duration = data[i].to - data[i].from;
 	}
-	
 //	return data;
 	subModel.setSequences(data);
 };

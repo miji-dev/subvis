@@ -11,33 +11,48 @@ SubVis.ModuleSequenceText = (function () {
 		},
 		
 		initView = function(data) {
-			var item,
-				seqs = data.get('sequences'),
-				seq = data.getAllSequences();
-			for(var i = 0; i < seq.length; i++) {
-				item = seqs[i];
-				seq[i] = '<span class="sequence-text-item"><span class="sequence-text-time">' + formatTime(item.from) + ' > ' + formatTime(item.to) + '</span><span class="sequence-text-text">' + seq[i] + '</span></span>';
-			}
-			render({text: seq});
+			render(data);
 		},
 
 		render = function (data) {
 			var seq = '',
-				temp = '';
+				temp = '',
+				nlpArr;
 			if(data.fromTo) {
 				for(var i = 0; i < data.text.length; i++) {
-					var item = nlp.pos(data.text[i]);
-					temp += '<span class="sequence-text-item"><span class="sequence-text-time">' + formatTime(data.from[i]) + ' > ' + formatTime(data.to[i]) + '</span><span class="sequence-text-text">' + item + '</span></span>';
+					nlpArr = nlp.pos(data.text[i].toLowerCase().replace(/-/g, ''));
+					temp += '<span class="sequence-text-item"><span class="sequence-text-time">' + formatTime(data.from[i]) + ' > ' + formatTime(data.to[i]) + '</span><br/>';
+					for(var j = 0; j < nlpArr.sentences.length; j++) {
+						var sentence = nlpArr.sentences[j];
+						for(var k = 0; k < sentence.tokens.length; k++) {
+							var token = sentence.tokens[k];
+							temp += '<span title="' + token.pos.tag + '" class="tok ' + token.pos.tag + '">' + token.text + '</span>';
+						}
+					}
+					temp += '</span>';
 				}
-				data.text = temp;
+				temp += '</span>';
 				var mins = Math.floor((data.fromTo.to - data.fromTo.from) / 6e4) || 0;
 				var secs = Math.round(((data.fromTo.to - data.fromTo.from) % 6e4) / 1000) || 0;
 				seq += 'Sequences from ' + formatTime(data.fromTo.from) + ' to ' + formatTime(data.fromTo.to) + ' | ' + mins + ' min. ' + secs + ' sec. | ';
-				seq += (data.count + ' sequences combined');
+				seq += (data.count + ' sequences');
 			} else {
 				seq += 'All Sequences combined';
+				var seqs = data.get('sequences');
+				for(var i = 0; i < seqs.length; i++) {
+					nlpArr = nlp.pos(seqs[i].text.toLowerCase().replace(/-/g, ''));
+					temp += '<span class="sequence-text-item"><span class="sequence-text-time">' + formatTime(seqs[i].from) + ' > ' + formatTime(seqs[i].to) + '</span><br/>';
+					for(var j = 0; j < nlpArr.sentences.length; j++) {
+						var sentence = nlpArr.sentences[j];
+						for(var k = 0; k < sentence.tokens.length; k++) {
+							var token = sentence.tokens[k];
+							temp += '<span title="' + token.pos.tag + '" class="tok ' + token.pos.tag + '">' + token.text + '</span>';
+						}
+					}
+					temp += '</span>';
+				}
 			}
-			$div.html(data.text);
+			$div.html(temp);
 			$el.find('.fromto-sequences').html(seq);
 		},
 		

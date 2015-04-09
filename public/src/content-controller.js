@@ -34,6 +34,7 @@ SubVis.ContentController = (function () {
 		onTimelineElementClicked = function(event, data) {
 			currentIntervalData = data;//subModel.getDataForIntervall(data.fromTo);
 			moduleSequenceText.render(data);
+			moduleWordCloud.render(data.text.join(' '));
 		},
 
 		onRemoveClicked = function (event, which) {
@@ -46,7 +47,6 @@ SubVis.ContentController = (function () {
 		},
 
 		initModules = function () {
-			console.log(subModel)
 			moduleTimeline = SubVis.ModuleTimeline.init(subModel);
 			moduleSettings = SubVis.ModuleSettings.init();
 			moduleMeta = SubVis.ModuleMeta.init();

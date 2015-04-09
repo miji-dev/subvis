@@ -227,6 +227,7 @@ button {
 	padding: 4px;
 }
 .sequence-text-item .sequence-text-time {
+	margin-top: 10px;
 	background: #333;
 	color: #efefef;
 }
@@ -236,6 +237,79 @@ button {
 	margin: 5px;
 }
 
+.tok {
+	
+}
+
+.tok.NN {
+	background: #f64747;
+}
+.tok.VBP {
+	background: #f1a9a0;
+}
+.tok.IN {
+	background: #e2a6a6;
+}
+.tok.JJ {
+	background: #aea8d3;
+}
+.tok.PRP {
+	background: #36d767;
+}
+.tok.NNO {
+	background: #87d37c;
+}
+.tok.RB {
+	background: #03c9a9;
+}
+.tok.CP {
+	background: #65c6bb;
+}
+.tok.VBG {
+	background: #f5d76e;
+}
+.tok.DT {
+	background: #f4b350;
+}
+.tok.CC {
+	background: #f9bf3b;
+}
+.tok.CD {
+	background: #bdc3c7;
+}
+.tok.VBN {
+	background: #f2f1ef;
+}
+.tok.RBR {
+	background: #e08283;
+}
+.tok.VBD {
+	background: #aea8d3;
+}
+.tok.UH {
+	background: #19b5fe;
+}
+.tok.MD {
+	background: #90c695;
+}
+.tok.PP {
+	background: #1ba39c;
+}
+.tok.VB {
+	background: #2abb9b;
+}
+.tok.VBZ {
+	background: #f5d76e;
+}
+.tok.NNA {
+	background: #f7ca18;
+}
+.tok.EX {
+	background: #e87e04;
+}
+.tok.JJR {
+	background: #d2527f;
+}
 /* module finder */
 .finder-item {
 	list-style: none;
