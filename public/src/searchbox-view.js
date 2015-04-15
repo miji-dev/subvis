@@ -2,25 +2,46 @@ SubVis.SearchBoxView = (function () {
 	var that = {},
 		$searchbox,
 		$input,
-		$options,
 
 		init = function () {
 			$searchbox = $('#search-box');
 			$input = $searchbox.find('input');
-			$options = $searchbox.find('option');
 
-			registerListeners();
+			initAutocomplete();
 
 			return that;
 		},
-
-		registerListeners = function () {
-			$searchbox.on('change', 'input', onInputChange);
-			$searchbox.on('click', 'button', onButtonClick);
+		
+		initAutocomplete = function() {
+			var auto = $input.autocomplete({
+				minLength: 1,
+				source: sub_list,
+				select: onItemSelect
+			});
+			auto.autocomplete('instance')._renderItem = renderItem;
+			auto.autocomplete('instance')._renderMenu = renderMenu;
+		},
+		
+		renderMenu = function(ul, items) {
+			var that = this;
+			if(items.length > 19) {
+				items = items.slice(0, 19);
+			}
+			$.each( items, function( index, item ) {
+				that._renderItemData( ul, item );
+			});
 		},
 
-		getInputValue = function () {
-			return $input.val();
+		renderItem = function(ul, item) {
+			var label = '<span class="sb-label">' + item.label + '</span> | ',
+				year = '<span class="sb-year"> (' + item.movieYear + ') </span>';
+
+			return $('<li>').append(label + year).appendTo(ul);
+		},
+		
+		onItemSelect = function(event, ui) {
+			$searchbox.trigger('searchSubtitle', ui.item.imdbID);
+			return false;
 		},
 		
 		clipToBar = function() {
@@ -30,27 +51,6 @@ SubVis.SearchBoxView = (function () {
 		
 		unlockFromBar = function() {
 			$searchbox.removeClass('search-box-header');			
-		},
-
-		mapInputValue = function () {
-			var val = getInputValue(),
-				option,
-				i;
-
-			for (i = 0; i < $options.length; i++) {
-				option = $options[i];
-				if (option.value == val) {
-					return option.label;
-				}
-			}
-		},
-
-		onInputChange = function (event) {
-			$searchbox.trigger('searchSubtitle', mapInputValue());
-		},
-
-		onButtonClick = function (event) {
-			$searchbox.trigger('searchSubtitle', mapInputValue());
 		};
 
 	that.init = init;

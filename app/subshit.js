@@ -13,6 +13,10 @@ var SUBLIST;
 
 var callback;
 
+var unsuitableSubs = [];
+var downloadResults;
+var curId;
+
 // online for pulp dummy
 var fs = require('fs'),
 	path = require('path'),
@@ -26,68 +30,71 @@ subshit.api.on("search", function () {
 	console.log("searching ...")
 });
 
-/*subshit.api.login().done(
+subshit.api.login().done(
 	function (token) {
 		TOKEN = token;
 	}
 );
-*/
-var getSubtitle = function(id, cb) {
-	callback = cb;
+
+// for local file
+var getSubtitle1 = function(id, cb) {
+//	callback = cb;
 	var data = fs.readFileSync(SUB_LIST_PATH).toString();
 	
 	subModel = new SubModel(id, "Pulp Fiction", '1994', '8.9');
-	preprocessSubtitle(data);
-	callback(subModel);
-	
-/*	for (var i = 0; i < rows.length; i++) {
-		var r = processRow(rows[i]);
-		subs.push(r);
-	}
-	subs.pop();
-*/
-}
+	processSequences2(preprocessSubtitle(data));
+	cb(subModel);
+};
 
 // public method to get a specific subtitle file
-var getSubtitle1 = function (id, cb) {
-	callback = cb;
+// using subshit
+var getSubtitle = function (id, cb) {
+	callback = cb || callback;
 
-	subshit.api.searchID(TOKEN, 'eng', id).done(function (results) {
-		var mostDownloads = 0,
-			bestID,
-			subLink,
-			movieName = '',
-			movieYear = 0,
-			movieRating = 0;
+	if(id) {
+		subshit.api.searchID(TOKEN, 'eng', id).done(onSubtitleListDownloaded);
+	} else {
+		onSubtitleListDownloaded();
+	}
+};
 
+var onSubtitleListDownloaded = function(results) {
+	var mostDownloads = 0,
+		bestRating = 0,
+		bestID,
+		subLink,
+		movieName = '',
+		movieYear = 0,
+		movieRating = 0;
 
-		for (var i = 0; i < results.length; i++) {
-			var sub = results[i],
-				downloads = Number(sub.SubDownloadsCnt);
+	downloadResults = results || downloadResults;
 
-			if (downloads > mostDownloads) {
-				movieName = movieName || sub.MovieName;
-				movieYear = movieYear || sub.MovieYear;
-				movieRating = movieRating|| sub.MovieImdbRating;
-				mostDownloads = downloads;
-				bestID = i;
-				subLink = sub.SubDownloadLink;
-			}
+	for (var i = 0; i < downloadResults.length; i++) {
+		var sub = downloadResults[i],
+			downloads = Number(sub.SubDownloadsCnt),
+			rating = Number(sub.SubRating);
+
+		if ((downloads > mostDownloads || rating > bestRating) && unsuitableSubs.indexOf(i) < 0 && sub.SubSumCD == 1) {
+			movieName = movieName || sub.MovieName;
+			movieYear = movieYear || sub.MovieYear;
+			movieRating = movieRating|| sub.MovieImdbRating;
+			mostDownloads = downloads;
+			bestRating = rating;
+			bestID = i;
+			curId = bestID;
+			subLink = sub.SubDownloadLink;
 		}
+	}
 
-		subModel = new SubModel(id, movieName, movieYear, movieRating);
+	if(bestID > 0) {
+		subModel = new SubModel(bestID, movieName, movieYear, movieRating);
 		downloadSubtitle(subLink);
-	});
+	} else {
+		callback(false);
+	}
 };
 
 var downloadSubtitle = function (link) {
-	/*var options = {
-	  hostname: link,
-	  method: 'GET',
-	  headers: {
-	    'Accept-Encoding': 'gzip,deflate',
-		}
-	};*/
 	var req = http.request(link, onSubtitleDownloaded);
 
 	req.on('error', function (err) {
@@ -98,34 +105,46 @@ var downloadSubtitle = function (link) {
 };
 
 var preprocessSubtitle = function (subString) {
-	var data = subString.split(/\n\n/g), // /\r\n\r\n/g
+	var data = subString.split(/\r\n\r\n/g), // /\n\n/g --> for local file
 		i,
 		l;
+
 	for (i = 0, l = data.length; i < l; i++) {
-		var splitted = data[i].split(/\n/); // /\r\n/
+		var splitted = data[i].split(/\r\n/); // /\n/ --> for local file
 		var timestamp = splitted[1].split(' --> ');
 
-		data[i] = {
-			id: splitted[0],
-			from: formatTime(timestamp[0]),
-			to: formatTime(timestamp[1]),
-			text: splitted.slice(2, splitted.length).join(' '),
+		if(timestamp[1]) {
+			data[i] = {
+				id: splitted[0],
+				from: formatTime(timestamp[0]),
+				to: formatTime(timestamp[1]),
+				text: preProcessText(splitted.slice(2, splitted.length)),
+				fromto: splitted[1]
+			};
+			data[i].duration = data[i].to - data[i].from;
+		} else {
+			return false;
 		}
-		data[i].duration = data[i].to - data[i].from;
 	}
-//	return data;
-	subModel.setSequences(data);
+	return data;
 };
 
-var processSequences2 = function(data) {
+var preProcessText = function(text) {
+	return text.join(' ').toLowerCase().replace(/(\.\.\.|\.\.)/g, '.').replace(/(<\/?\w+>)/g,'');
+};
+
+var processSequences2 = function(seqs) {
+	if(!seqs) {
+		return false;
+	}
 	nlp = NlProcessor.init();
-	var seqs = subModel.getSequences();
 	// add to each sequence its structured sentences
 	for (var i = 0; i < seqs.length; i++) {
 		seqs[i].stemmedTokens = nlp.getTokenizedAndStemmedWords(seqs[i].text);
 		seqs[i].sentiment = nlp.getSentimentScore(seqs[i].text);
 	}
 	subModel.setSequences(seqs);
+	return true;
 }
 
 // deprecated due to nlp.getSentenceStructure (.pos function) which can't be casted to client
@@ -173,10 +192,16 @@ var processSequences = function(data) {
 };
 
 var formatTime = function (timeString) {
-	var hms = timeString.split(':');
-	var sms = hms[2].split(',');
-	var millisecs = Number(hms[0]) * 3600000 + Number(hms[1]) * 60000 + Number(sms[0]) * 1000 + Number(sms[1]);
-	return millisecs;
+	try {
+		var hms = timeString.split(':');
+		var sms = hms[2].split(',');
+		var millisecs = Number(hms[0]) * 3600000 + Number(hms[1]) * 60000 + Number(sms[0]) * 1000 + Number(sms[1]);
+		return millisecs;
+	} catch(err) {
+		console.log('TimeString:', timeString);
+		console.log("Time format error:", err);
+		return '00:00:00';
+	}
 };
 
 var onSubtitleDownloaded = function (res) {
@@ -186,14 +211,16 @@ var onSubtitleDownloaded = function (res) {
 	gunzip.on('data', function (chunk) {
 		result.push(chunk.toString());
 	}).on('end', function () {
-		preprocessSubtitle(result.join(''))
-		processSequences2();
-//		processSequences(preprocessSubtitle(result.join('')));
+//		preprocessSubtitle(result.join(''));
+//		processSequences2();
+		if(processSequences2(preprocessSubtitle(result.join('')))) {
+			callback(subModel);
+		} else {
+			unsuitableSubs.push(curId);
+			getSubtitle();
+		}
 //		processSequences();
 //		subModel.update();
-	
-	callback(subModel);
-
 	}).on('error', function (err) {
 		console.log('res error: ', err);
 	});

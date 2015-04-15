@@ -1,12 +1,16 @@
 var fs = require('fs'),
 	path = require('path'),
-	SUB_LIST_PATH = path.join('app', 'txt', 'subs.txt'),
+	SUB_LIST_PATH = path.join('app', 'txt', 'sublist.json'),
 	SUB_DELIMITER1 = '\n',
 	SUB_DELIMITER2 = '\t',
 	subs = [],
 
 	init = function () {
-		readFile();
+		getSubsSync();
+	},
+	
+	getSubsSync = function() {
+		subs = JSON.parse(fs.readFileSync(SUB_LIST_PATH, 'utf8'));
 	},
 
 	// read and process subtitle infos. ~40000 items
@@ -30,7 +34,8 @@ var fs = require('fs'),
 		var obj = {
 			id: sub[0],
 			value: sub[1],
-			imdb: sub[2]
+			year: sub[2],
+			imdb: sub[3]
 		};
 		return obj;
 	};

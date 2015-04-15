@@ -13,20 +13,29 @@ SubVis.ModuleSequenceText = (function () {
 		initView = function(data) {
 			render(data);
 		},
+		
+		normaliseText = function(text) {
+			var res = text.replace(/\s/g, ' ').replace(/^\s/gm,'').replace(/\s$/gm,'');
+			return res;
+		},
 
 		render = function (data) {
 			var seq = '',
 				temp = '',
+				txt,
 				nlpArr;
 			if(data.fromTo) {
 				for(var i = 0; i < data.text.length; i++) {
-					nlpArr = nlp.pos(data.text[i].toLowerCase().replace(/-/g, ''));
+					txt = normaliseText(data.text[i]);
+					nlpArr = nlp.pos(txt); //.toLowerCase().replace(/-/g, '')
 					temp += '<span class="sequence-text-item"><span class="sequence-text-time">' + formatTime(data.from[i]) + ' > ' + formatTime(data.to[i]) + '</span><br/>';
 					for(var j = 0; j < nlpArr.sentences.length; j++) {
 						var sentence = nlpArr.sentences[j];
 						for(var k = 0; k < sentence.tokens.length; k++) {
 							var token = sentence.tokens[k];
-							temp += '<span title="' + token.pos.tag + '" class="tok ' + token.pos.tag + '">' + token.text + '</span>';
+							if(token.text) {
+								temp += '<span title="' + token.pos.tag + '" class="tok ' + token.pos.tag + '">' + token.text + '</span>';
+							}
 						}
 					}
 					temp += '</span>';
@@ -40,13 +49,16 @@ SubVis.ModuleSequenceText = (function () {
 				seq += 'All Sequences combined';
 				var seqs = data.get('sequences');
 				for(var i = 0; i < seqs.length; i++) {
-					nlpArr = nlp.pos(seqs[i].text.toLowerCase().replace(/-/g, ''));
-					temp += '<span class="sequence-text-item"><span class="sequence-text-time">' + formatTime(seqs[i].from) + ' > ' + formatTime(seqs[i].to) + '</span><br/>';
+					txt = normaliseText(seqs[i].text);
+					nlpArr = nlp.pos(txt); //.toLowerCase().replace(/-/g, '')
+					temp += '<span class="sequence-text-item"><span class="sequence-text-time">' + seqs[i].fromto + '</span><br/>';
 					for(var j = 0; j < nlpArr.sentences.length; j++) {
 						var sentence = nlpArr.sentences[j];
 						for(var k = 0; k < sentence.tokens.length; k++) {
 							var token = sentence.tokens[k];
-							temp += '<span title="' + token.pos.tag + '" class="tok ' + token.pos.tag + '">' + token.text + '</span>';
+							if(token.text) {
+								temp += '<span title="' + token.pos.tag + '" class="tok ' + token.pos.tag + '">' + token.text + '</span>';
+							}
 						}
 					}
 					temp += '</span>';

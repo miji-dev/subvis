@@ -10,6 +10,9 @@ body {
 a {
 	text-decoration: none;
 }
+a:hover {
+	cursor: pointer;
+}
 
 h1 {
 	border-bottom: 1px solid #333;
@@ -40,7 +43,7 @@ h4 {
 	margin: 10px 0 5px 0;
 }
 
-button {
+button, .btn {
 	border: none;
 	border-radius: 5px;
 	color: #999;
@@ -65,7 +68,6 @@ button {
 
 .header-container {
 	background: #333;
-	border-bottom: 2px solid #fff;
 	color: #fff;
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -74,6 +76,66 @@ button {
 	height: 50px;
 	padding: 0 5px;
 	text-transform: uppercase;
+}
+
+.error {
+	position: fixed;
+	display: none;
+	background: #fff;
+	border: 5px solid red;
+	color: red;
+	width: 50%;
+	left: 25%;
+	text-align: center;
+	padding: 5px;
+	top: 80px;
+}
+.spinner-container {
+	display: none;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: rgba(255,255,255,0.8);
+	z-index: 5;
+}
+.spinner-inner {
+	position: absolute;
+	top: 25%;
+	left: 50%;
+	margin-left: -25%;
+	background: #fff;
+	border-radius: 10px;
+	border: 10px solid rgba(0,0,0,0.5);
+	width: 50%;
+	text-align: center;
+}
+.spinner {
+	width: 30px;
+	height: 30px;
+	background-color: #333;
+	
+	margin: 10px auto;
+	-webkit-animation: rotateplane 1.2s infinite ease-in-out;
+	animation: rotateplane 1.2s infinite ease-in-out;
+}
+
+@-webkit-keyframes rotateplane {
+	0% { -webkit-transform: perspective(120px) }
+	50% { -webkit-transform: perspective(120px) rotateY(180deg) }
+	100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
+}
+
+@keyframes rotateplane {
+	0% { 
+		transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+		-webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg) 
+	} 50% { 
+		transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+		-webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg) 
+	} 100% { 
+		transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+		-webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+	}
 }
 /* Logo */
 
@@ -111,27 +173,14 @@ button {
 
 .search-movie {
 	border: none;
-	float: left;
-	border-radius: 10px 0 0 10px;
 	color: #999;
 	height: 50px;
 	margin: 0 auto;
 	outline: none;
 	padding: 10px;
-	width: 80%;
+	width: 100%;
 }
 
-.btn-search-movie {
-	background: url(../img/search.png) 10px center no-repeat #999;
-	color: #ddd;
-	float: left;
-	border-radius: 0 10px 10px 0;
-	height: 50px;
-	padding-left: 15px;
-	width: 20%;
-}
-
-.btn-search-movie:hover {}
 /* content */
 /* modules */
 
@@ -143,16 +192,17 @@ button {
 	-webkit-flex-wrap: wrap;
 	-ms-flex-wrap: wrap;
 	flex-wrap: wrap;
+	justify-content: space-around;
 }
 
 .module {
 	background: #fff;
 	border-radius: 5px;
 	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-	margin: 5px;
+	margin: 5px 0.5%;
 	padding: 5px;
 	min-height: 200px;
-	width: 200px;
+	width: 15%;
 }
 /* module items */
 
@@ -160,6 +210,19 @@ button {
 	text-align: right;
 	background: #efefef;
 	padding: 5px;
+}
+
+.key {
+	display: inline-block;
+	background: #333;
+	color: #fff;
+	margin: 2px;
+	padding: 2px;
+}
+.amount {
+	display: inline-block;
+	margin: 2px;
+	padding: 2px;
 }
 /* meta module */
 
@@ -242,7 +305,7 @@ button {
 }
 
 .tok.NN {
-	background: #f64747;
+	background: #19b5fe;
 }
 .tok.VBP {
 	background: #f1a9a0;
@@ -287,7 +350,7 @@ button {
 	background: #aea8d3;
 }
 .tok.UH {
-	background: #19b5fe;
+	background: #f64747;
 }
 .tok.MD {
 	background: #90c695;
@@ -314,6 +377,9 @@ button {
 .finder-item {
 	list-style: none;
 }
+#word-finder {
+	width: 90%;
+}
 
 /* module wordcloud */
 #module-wordcloud {
@@ -322,4 +388,22 @@ button {
 }
 #word-cloud {
 	text-align: center;
+}
+
+/* module toplists */
+#module-toplists {
+	width: 100%;
+}
+#module-toplists .module-content {
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+}
+#module-toplists .module-item-block {
+	width: 15%;
+	margin: 5px;
+}
+.toplist-item {
+	list-style-type: decimal;
+	margin-left: 20px;
 }

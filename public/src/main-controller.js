@@ -3,10 +3,12 @@ SubVis.MainController = (function () {
 		searchBoxView,
 		contentController,
 		$body,
+		$spinnerContainer,
 		SERVER = 'http://subvis-wiese4-4.c9.io/',
 
 		init = function () {
 			$body = $('body');
+			$spinnerContainer = $('#spinner-container');
 
 			initControllers();
 			initViews();
@@ -23,10 +25,16 @@ SubVis.MainController = (function () {
 			contentController = SubVis.ContentController.init();
 		},
 
-		onSearchSubtitle = function (event, data) {
-			$.get(SERVER + data, function(data) {
-				searchBoxView.clipToBar();
-				contentController.render(data);
+		onSearchSubtitle = function (event, id) {
+			$spinnerContainer.fadeIn();
+			$('.error').fadeOut();
+			$.get(SERVER + id, function(data) {
+				if(data) {
+					contentController.render(data);
+				} else {
+					$('.error').fadeIn();
+				}
+				$spinnerContainer.fadeOut();
 			});
 		},
 

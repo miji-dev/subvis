@@ -7,17 +7,20 @@ html(lang='en')
 		title SubVis 0.1
 		link(rel="stylesheet", href="/res/css/reset.css")
 		link(rel="stylesheet", href="/res/css/c3.min.css")
+		link(rel="stylesheet", href="/res/css/jquery-ui.css")
 		link(rel="stylesheet", href="/res/css/styles.css")
 	body
 		div#outer-container.container.outer-container
-		
+			#spinner-container.spinner-container
+				#spinner-inner.spinner-inner
+					h2 LOADING ...
+					div#spinner.spinner
+					h2 PLEASE WAIT ...
 			div#header-container.container.header-container
 				span#logo.logo SubVis V0.1
-				div#search-box.search-box
-					datalist(id='subs')
-						- each val in subs
-							option(label= val.imdb)= val.value
-					input#search-movie.search-movie(list='subs', placeholder='Type in a movie title', autofocus)
-					button#btn-search-movie.btn.btn-search-movie Search
-			
+				div#search-box.search-box.search-box-header
+					input#search-movie.search-movie(placeholder='Start typing and select a movie from the list and press ENTER', autofocus, title='1. Start typing a movie title; 2. Select a movie from the list; 3. Press ENTER to start the search')
+
+			#error.error Oops. An error occured. Please try again with another movie
+				
 			div#content-container.container.content-container

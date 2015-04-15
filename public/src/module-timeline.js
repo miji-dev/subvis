@@ -71,11 +71,12 @@ SubVis.ModuleTimeline = (function () {
 				dataArray = [],
 				// what to display
 				sequences = ['sequences'],
-				wordCount = ['word count'],
+				wordCount = ['character count'],
 				sequenceCount = ['sequence count'],
 				fromTo = ['from to'],
 				from = ['from'],
 				to = ['to'],
+				seqs = ['seqs'],
 
 				intervalMilli = interval * 6e4,
 				prefillMax = Math.ceil(maxMinutes / interval),
@@ -96,13 +97,13 @@ SubVis.ModuleTimeline = (function () {
 				fromTo[i + 1] = {};
 				from[i+1] = [];
 				to [i+1] = [];
+				seqs[i+1] = [];
 			}
 
 			for (i = 0; i < arr.length; i++) {
 				item = arr[i];
 
 				curIndex = Math.floor(item.from / intervalMilli) + 1;
-
 				wordCount[curIndex] += item.text.length;
 				sequenceCount[curIndex] ++;
 				sequences[curIndex].push(item.text);
@@ -110,6 +111,7 @@ SubVis.ModuleTimeline = (function () {
 				fromTo[curIndex].to = item.to;
 				from[curIndex].push(item.from);
 				to[curIndex].push(item.to);
+				seqs[curIndex].push(item);
 			}
 			
 			dataArray.push(xAxis);
@@ -135,16 +137,17 @@ SubVis.ModuleTimeline = (function () {
 								fromTo: fromTo[d.x + 1],
 								count: sequenceCount[d.x + 1],
 								from: from[d.x + 1],
-								to: to[d.x + 1]
+								to: to[d.x + 1],
+								seqs: seqs[d.x +1]
 							});
 						},
 						x: 'x',
 						columns: dataArray,
 						types: {
-							'word count': 'bar'
+							'character count': 'bar'
 						},
 						axes: {
-							'word count': 'y',
+							'character count': 'y',
 							'sequence count': 'y2'
 						}
 					},
@@ -157,7 +160,7 @@ SubVis.ModuleTimeline = (function () {
 							type: 'category'
 						},
 						y: {
-							label: 'Word Count'
+							label: 'Character Count'
 						},
 						y2: {
 							show: true,
