@@ -2,6 +2,7 @@ SubVis.MainController = (function () {
 	var that = {},
 		searchBoxView,
 		contentController,
+		quotes,
 		$body,
 		$spinnerContainer,
 		SERVER = 'http://subvis-wiese4-4.c9.io/',
@@ -9,6 +10,8 @@ SubVis.MainController = (function () {
 		init = function () {
 			$body = $('body');
 			$spinnerContainer = $('#spinner-container');
+			
+			quotes = SubVis.Quotes.init();
 
 			initControllers();
 			initViews();
@@ -26,7 +29,7 @@ SubVis.MainController = (function () {
 		},
 
 		onSearchSubtitle = function (event, id) {
-			$spinnerContainer.fadeIn();
+			$spinnerContainer.fadeIn().find('#quote').html(quotes.getRandomQuote());
 			$('.error').fadeOut();
 			$.get(SERVER + id, function(data) {
 				if(data) {

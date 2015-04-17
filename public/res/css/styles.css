@@ -88,6 +88,7 @@ button, .btn {
 	left: 25%;
 	text-align: center;
 	padding: 5px;
+	z-index: 100;
 	top: 80px;
 }
 .spinner-container {
@@ -136,6 +137,28 @@ button, .btn {
 		transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
 		-webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
 	}
+}
+
+.quote-meta {
+	text-align: right;
+	text-transform: uppercase;
+	margin: 10px;
+	color: #fff;
+	font-weight: bold;
+}
+.quote-meta span {
+	padding: 5px;
+	background: #aaa;
+}
+
+.quote-text {
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	padding: 10px;
+	text-transform: uppercase;
+	font-weight: bold;
+	text-align: left;
+	margin: 5px;
 }
 /* Logo */
 
@@ -203,6 +226,49 @@ button, .btn {
 	padding: 5px;
 	min-height: 200px;
 	width: 15%;
+}
+.module h3 {
+	position: relative;
+}
+
+.tooltip-container {
+	background: #fff;
+	color: #333;
+	position: absolute;
+	text-align: left;
+	z-index: 5;
+	text-transform: none;
+	box-shadow: 0 0 0 10px rgba(0,0,0,0.5);
+	padding: 5px;
+	width: 400px;
+}
+.lefty {
+	left: -300px;
+}
+.tooltip-header {
+	border-bottom: 1px solid #ccc;
+	margin: 5px 0;
+}
+.tooltip-content {
+	font-size: 0.7em;
+	margin: 2px;
+}
+
+.tooltip {
+	border-radius: 13px;
+	display: inline-block;
+	position: absolute;
+	left: 0;
+	color: #fff;
+	padding: 2px;
+	margin: 0;
+	text-align: center;
+	width: 26px;
+	height: 26px;
+	background: #ccc;
+}
+.tooltip:before {
+	content: '?';
 }
 /* module items */
 

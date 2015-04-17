@@ -16,6 +16,7 @@ SubVis.ContentController = (function () {
 		//helpers
 		currentIntervalData,
 		statisticHelper,
+		tooltips,
 
 		subModel,
 
@@ -69,6 +70,7 @@ SubVis.ContentController = (function () {
 		},
 
 		initModules = function () {
+			tooltips = SubVis.Tooltips.init();
 			statisticHelper = SubVis.StatisticHelper.init();
 			moduleTimeline = SubVis.ModuleTimeline.init(subModel);
 			moduleSettings = SubVis.ModuleSettings.init();

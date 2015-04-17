@@ -26,8 +26,8 @@ subshit.api.on("login", function (token) {
 	console.log("login: " + token);
 });
 
-subshit.api.on("search", function () {
-	console.log("searching ...")
+subshit.api.on("search", function (data) {
+	console.log("searching ...", data.length)
 });
 
 subshit.api.login().done(
@@ -50,7 +50,6 @@ var getSubtitle1 = function(id, cb) {
 // using subshit
 var getSubtitle = function (id, cb) {
 	callback = cb || callback;
-
 	if(id) {
 		subshit.api.searchID(TOKEN, 'eng', id).done(onSubtitleListDownloaded);
 	} else {
@@ -61,7 +60,7 @@ var getSubtitle = function (id, cb) {
 var onSubtitleListDownloaded = function(results) {
 	var mostDownloads = 0,
 		bestRating = 0,
-		bestID,
+		bestID = 0,
 		subLink,
 		movieName = '',
 		movieYear = 0,
@@ -85,7 +84,6 @@ var onSubtitleListDownloaded = function(results) {
 			subLink = sub.SubDownloadLink;
 		}
 	}
-
 	if(bestID > 0) {
 		subModel = new SubModel(bestID, movieName, movieYear, movieRating);
 		downloadSubtitle(subLink);
